@@ -1,5 +1,5 @@
 %% Compute the Global Colour Histogram
-function H=ComputeRGBHistogram(img,Q)
+function H=computeRGBHistogram(img,Q)
 arguments
     img
     Q = 4

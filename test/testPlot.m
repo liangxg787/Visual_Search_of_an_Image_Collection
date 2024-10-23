@@ -16,4 +16,4 @@ tinyv7 = data(:,4);
 recalls = [tinydv7 tinyv7];
 
 legends = ["YOLOv7-Tiny", "YOLOv7"];
-plot_pr_curve(precisions, recalls, legends)
+plotPrCurve(precisions, recalls, legends)

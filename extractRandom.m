@@ -29,6 +29,6 @@ end
 % F=[average_red average_green average_blue];
 
 %% compute with Global Colour Histogram
-F=ComputeRGBHistogram(img,Q);
+F=computeRGBHistogram(img,Q);
 
 return;

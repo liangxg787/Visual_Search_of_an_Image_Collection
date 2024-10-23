@@ -8,9 +8,9 @@ close all;
 clear;
 
 % file='cwsolution/descriptors/globalRGBhisto';
-file='data'
+file='data';
 % file_name='/20_1_s.mat';
-file_name='/test_data.mat'
+file_name='/test_data.mat';
 file_path=([file, file_name]);
-disp(file_path)
+disp(file_path);
 data=load(file_path);

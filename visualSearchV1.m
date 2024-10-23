@@ -1,4 +1,4 @@
-function visual_search()
+function visualSearchV1(queryImg)
 % VISUAL_SEARCH Summary of this function goes here
 % 
 % [OUTPUTARGS] = VISUAL_SEARCH(INPUTARGS) Explain usage here
@@ -14,11 +14,11 @@ function visual_search()
 % Revision: 0.1 
 
 %% Edit the following line to the folder you unzipped the MSRCv2 dataset to
-DATASET_FOLDER = global_setting.filePathInfo.DATASET_FOLDER;
+DATASET_FOLDER = GlobalSetting.filePathInfo.DATASET_FOLDER;
 
 %% and within that folder, another folder to hold the descriptors
 %% we are interested in working with
-DESCRIPTOR_SUBFOLDER=global_setting.filePathInfo.DESCRIPTOR_SUBFOLDER;
+DESCRIPTOR_SUBFOLDER=GlobalSetting.filePathInfo.DESCRIPTOR_SUBFOLDER;
 
 
 %% 1) Load all the descriptors into "ALLFEAT"
@@ -27,11 +27,13 @@ DESCRIPTOR_SUBFOLDER=global_setting.filePathInfo.DESCRIPTOR_SUBFOLDER;
 ALLFEAT=[];
 ALLFILES=cell(1,0);
 ctr=1;
-allfiles=global_setting.filePathInfo.allfiles;
-for filenum=1:length(allfiles)
-    fname=allfiles(filenum).name;
+allFiles=GlobalSetting.filePathInfo.allFiles;
+for filenum=1:length(allFiles)
+    fname=allFiles(filenum).name;
     imgfname_full=([DATASET_FOLDER,'/Images/',fname]);
     img=double(imread(imgfname_full))./255;
+
+    % Get all the iamge features
     thesefeat=[];
     featfile=[DESCRIPTOR_SUBFOLDER,'/',fname(1:end-4),'.mat'];%replace .bmp with .mat
     load(featfile,'F');
@@ -42,15 +44,15 @@ end
 
 %% 2) Pick an image at random to be the query
 NIMG=size(ALLFEAT,1);           % number of images in collection
-% queryimg=floor(rand()*NIMG);    % index of a random image
+% queryImg=floor(rand()*NIMG);    % index of a random image
 
 
 %% 3) Compute the distance of image to the query
 dst=[];
 for i=1:NIMG
     candidate=ALLFEAT(i,:);
-    query=ALLFEAT(queryimg,:);
-    thedst=cvpr_compare(query,candidate);
+    query=ALLFEAT(queryImg,:);
+    thedst=compareFeature(query,candidate);
     dst=[dst ; [thedst i]];
 end
 dst=sortrows(dst,1);  % sort the results by column 1
@@ -65,7 +67,7 @@ outdisplay=[];
 for i=1:SHOW
    img=imread(ALLFILES{dst(i,2)});
    img=img(1:2:end,1:2:end,:); % make image a quarter size
-   img=img(1:100,:,:); % crop image to uniform size vertically (some MSVC images are different heights)
+   img=img(1:81,:,:); % crop image to uniform size vertically (some MSVC images are different heights)
    outdisplay=[outdisplay img];
 end
 imgshow(outdisplay);

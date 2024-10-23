@@ -1,25 +1,27 @@
-classdef global_setting < handle
+classdef GlobalSetting
     %GLOBAL_SETTING Summary of this class goes here
     %   Detailed explanation goes here
 
     properties(Constant=true)
-        filePathInfo = global_setting
+        filePathInfo = GlobalSetting
     end
     properties
         DATASET_FOLDER
-        allfiles
+        allFiles
         DESCRIPTOR_FOLDER
         DESCRIPTOR_SUBFOLDER
+        TEST_DATA
     end
 
     methods
-        function obj = global_setting()
+        function obj = GlobalSetting()
             %GLOBAL_SETTING Construct an instance of this class
             %   Detailed explanation goes here
             obj.DATASET_FOLDER = 'data/MSRC_ObjCategImageDatabase_v2';
-            obj.allfiles = dir (fullfile([obj.DATASET_FOLDER,'/Images/*.bmp']));
+            obj.allFiles = dir (fullfile([obj.DATASET_FOLDER,'/Images/*.bmp']));
             obj.DESCRIPTOR_FOLDER = 'data/descriptors';
             obj.DESCRIPTOR_SUBFOLDER=[obj.DESCRIPTOR_FOLDER,'/globalRGBhisto'];
+            obj.TEST_DATA='data/testData.mat';
         end
 
     end

@@ -15,17 +15,17 @@ close all;
 clear all;
 
 %% Edit the following line to the folder you unzipped the MSRCv2 dataset to
-DATASET_FOLDER = global_setting.filePathInfo.DATASET_FOLDER;
+DATASET_FOLDER = GlobalSetting.filePathInfo.DATASET_FOLDER;
 
 %% and within that folder, create another folder to hold these descriptors
 %% the idea is all your descriptors are in individual folders - within
 %% the folder specified as 'OUT_FOLDER'.
-OUT_SUBFOLDER=global_setting.filePathInfo.DESCRIPTOR_SUBFOLDER;
+OUT_SUBFOLDER=GlobalSetting.filePathInfo.DESCRIPTOR_SUBFOLDER;
 
-allfiles=global_setting.filePathInfo.allfiles;
-for filenum=1:length(allfiles)
-    fname=allfiles(filenum).name;
-    fprintf('Processing file %d/%d - %s\n',filenum,length(allfiles),fname);
+allFiles=GlobalSetting.filePathInfo.allFiles;
+for filenum=1:length(allFiles)
+    fname=allFiles(filenum).name;
+    fprintf('Processing file %d/%d - %s\n',filenum,length(allFiles),fname);
     tic;
     imgfname_full=([DATASET_FOLDER,'/Images/',fname]);
     img=double(imread(imgfname_full))./255;
