@@ -1,0 +1,184 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm} % AMS styles for extra equation formatting
+\usepackage{graphicx} % for including graphics files
+\usepackage[numbers,sort]{natbib} % for better references control
+\usepackage{hyperref} % for hyperlinks within the paper and references
+\usepackage{titling}  % Include the titling package
+\usepackage{fontspec}  % Allows for system fonts
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}  % Set margins on all sides
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\hypersetup{colorlinks=true, linkcolor=blue,  anchorcolor=blue,
+citecolor=blue, filecolor=blue, menucolor=blue, pagecolor=blue,
+urlcolor=blue}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\todo}[1]{\vspace{5 mm}\par \noindent
+\marginpar{\textsc{Todo}}
+\framebox{\begin{minipage}[c]{0.90 \textwidth}
+\tt \flushleft #1 \end{minipage}}\vspace{5 mm}\par}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\graphicspath{{graphics/}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+
+%\renewcommand{\qedsymbol}{$\blacksquare$} % for filled square at end of proof
+%\numberwithin{equation}{section} % for the 1.1, 1.2 equation number style
+%\setlength{\parindent}{0em} % don't indent paragraphs
+%\setlength{\parskip}{1em} % add spacing between paragraphs
+%\linespread{1.6} % double-spacing
+
+\setmainfont{Arial}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\title{%
+  Visual Search of an Image Collection \\
+  \large EEE3032 - Computer Vision and Pattern Recognition \\
+  Coursework Assignment}
+
+\author{Xiaoguang Liang}
+\date{\today}
+% \maketitle
+% \newpage
+
+\begin{titlepage}
+  \centering  % Center everything on the title page
+  \vspace*{\fill}  % Add flexible vertical space at the top to push the title down
+
+  {\Huge\bfseries\thetitle}  % Set the title in large, bold font
+  \vskip 1em  % Add some space between title and author
+  
+  {\Large Xiaoguang Liang}  % Set the author name in a slightly smaller font
+  \vskip 1em  % Add space between author and date
+  
+  {\large \today}  % Set the date in a smaller font
+  
+  \vspace*{\fill}  % Add flexible vertical space at the bottom to center the content
+\end{titlepage}
+
+% Ensure all figures/tables are processed before the next page (Contents page)
+% \clearpage
+% Suppress any floats (figures, tables) from appearing on the next page
+\suppressfloats
+
+\tableofcontents
+
+\begin{abstract}
+This is the abstract.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+
+We have a table of contents displayed now, to help with writing the
+paper, but it is normally removed before submitting to a journal.
+
+References can be cited either directly in the text with
+\verb+\citet+, to refer the reader to a paper like that of
+\citet{Giles2003}, or they can be cited parenthetically
+\citep{Adams2002} with \verb+\citep+. If DOI numbers are in the
+references and \verb+pdflatex+ is used then the resulting PDF will
+have clickable links to the papers in the References.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{First section}
+
+To include a figure we use a floating environment which allows
+\LaTeX\ to put the figure anywhere it wants, and then we refer to it
+by number as figure \ref{fig:sample}.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=8cm]{"1_10_s.bmp.png"}
+\end{center}
+\caption{\label{fig:sample} This is the figure caption. Figure
+  captions should be long and descriptive because people actually read
+  them in papers, unlike most of the text.}
+\end{figure}
+
+If \verb+pdflatex+ is used then figures can be PDF, JPEG, PNG, or
+other formats, but cannot be EPS. If plain \verb+latex+ is used, then
+figures can only be EPS. For this reason it's typically best to
+include both EPS and non-EPS versions of each figure. Under Linux the
+commands \verb+epstopdf+ and \verb+convert+ are helpful with this.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{First subsection}
+
+Equations should use either the \verb+equation+ environment for single
+line equations:
+\begin{equation}
+\label{eqn:stokes_thm}
+\int_{\Omega} \mathbf{d}\alpha = \int_{\partial \Omega} \alpha
+\end{equation}
+or one of the \verb+amsmath+ environments (\verb+align+,
+\verb+multline+, etc) for more complex equations. The \verb+align+
+environment is particularly good:
+\begin{align}
+\label{eqn:newton}
+m\vec{a} &= \sum_{i = 1}^N F_i(\vec{x}) \\
+\label{eqn:newton_expanded}
+&= F_1(\vec{x}) + F_2(\vec{x}) + \cdots + F_N(\vec{x})
+\end{align}
+
+\begin{theorem}
+\label{thm:big_result}
+This is how we state a theorem. Lemmas and corollaries are similar.
+\end{theorem}
+
+\begin{proof}
+And this is the proof of our amazing result.
+\end{proof}
+
+\todo{MW: This is a ToDo box. Comments in here are not part of the
+  paper, but are a discussion about the paper. Start ToDo boxes with
+  your initials so that everyone can keep track of who said what. Once
+  the issue in a ToDo box has been resolved then anyone should delete
+  it, not just the person who wrote it.}
+
+\todo{MW: To reply to a ToDo box, just put your own after it.}
+
+\paragraph{Paragraph title.}
+\verb+\paragraph+s can be used to break up long blocks of text and
+help the reader. Paragraph titles should have the first word
+capitalized and then the others lowercase, and they should end with a
+period.
+
+\paragraph{Formatting units.}
+Following Knuth, units should be written like $v =
+10\,\text{m}/\text{s}$ or $p =
+20\,\text{kg}\,\text{m}\,\text{s}^{-1}$. The second form is generally
+preferred.
+
+\paragraph{Acronyms.}
+We should try to avoid acronyms wherever possible. The only acronyms
+that should be used are those that are so common that they are more
+easily recognized than their definitions, such as SO(3) or TCP/IP. As
+Richard Murray is fond of saying, defining an acronym just to save
+typing in a paper is very bad for a reader. We can read a familiar
+sequence of words almost as fast as we can read an acronym, and much
+faster if we have to pause to remember what the acronym is actually
+for. Generally speaking, we should limit ourselves to at most one or
+two new acronyms within a paper, and they should be reserved for
+things like algorithm names that we hope other people will also use.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\doi}[1]{DOI: \href{http://dx.doi.org/#1}{\nolinkurl{#1}}}
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

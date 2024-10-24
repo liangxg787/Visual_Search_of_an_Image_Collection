@@ -11,6 +11,8 @@ classdef GlobalSetting
         DESCRIPTOR_FOLDER
         DESCRIPTOR_SUBFOLDER
         TEST_DATA
+        PR_GRAPH_PATH
+        CM_GRAPH_PATH
     end
 
     methods
@@ -22,6 +24,8 @@ classdef GlobalSetting
             obj.DESCRIPTOR_FOLDER = 'data/descriptors';
             obj.DESCRIPTOR_SUBFOLDER=[obj.DESCRIPTOR_FOLDER,'/globalRGBhisto'];
             obj.TEST_DATA='data/testData.mat';
+            obj.PR_GRAPH_PATH='data/pr_graphs';
+            obj.CM_GRAPH_PATH='data/cm_graphs';
         end
 
     end

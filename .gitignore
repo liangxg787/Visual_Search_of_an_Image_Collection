@@ -161,5 +161,10 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 .history
+.DS_Store
 data
 *.asv
+document/._wordcount_selection.tex
+document/*.gz
+document/*.png
+document/*.pdf

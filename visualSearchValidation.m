@@ -9,47 +9,66 @@ clear;
 
 % Experiment with different levels of RGB quantization
 % Make a list of Q values the range from 1 to 8, strading by 2
-QLevels = 1:5:40;
+QLevels = 5:5:9;
+QLevelLen=length(QLevels);
 
 % Load test data
 testDataFile=GlobalSetting.filePathInfo.TEST_DATA;
 testData=load(testDataFile, 'testFiles').testFiles;
-% testData=testData(1:2,:);
-% testDataLen=length(testData);
+% Sample test data
+testData=testData(1:2,:);
+testDataLen=length(testData);
 
-%% Get the feature data under different Q levels
-precisionData=[];
-reacallData=[];
-legendNames=[];
 tic;
-for i = 1:length(QLevels)
-    Q = QLevels(i);
-    fprintf("Testing when Q = %d\n", Q);
-    fprintf("1. Start computing descriptors ...\n");
-    computeDescriptors(Q);
+% add progress bar
+% h = waitbar(0, 'Testing data...');
 
-    % Test all test data
-    fprintf("2. Start testing ...\n")
+% Starting parallel pool to accelerate the computing with parfor
+% Test every picture in the test dataset and save it's PR curve.
+% Test all test data
+fprintf("Start testing ...\n");
+for i = 1:testDataLen
+    currentImg = testData(i);
+    fileName = currentImg.name;
+    fileName=string(fileName);
+    fprintf("*** Testing file: %s ...\n", fileName);
     % Define the Stuct for all features
     PRValues=struct('name', {}, 'P', {}, 'R', {});
-    % add progress bar
-    h = waitbar(0, 'Testing data...');
-    for j = 1:testDataLen
-        currentImg = testData(j);
-        fileName = currentImg.name;
-        % fprintf("Testing file: %s ...\n", fileName);
-        topImgs=visualSearch(fileName);
-        PRValues = computePrValue(topImgs, PRValues);
+    % Get the feature data under different Q levels
+    legendNames=strings(1,QLevelLen);
+    for j = 1:QLevelLen
+        tic;
+        Q = QLevels(j);
+        strQ=strcat("Q is ", num2str(Q));
+        legendNames(j)=strQ;
 
-        % Show progress bar
-        waitbar(j / testDataLen, h, sprintf('Progress: %d%%', round(j/testDataLen*100)));
+        fprintf("Testing when Q = %d\n", Q);
+        fprintf("1. Start computing descriptors ...\n");
+        AllFeatures=computeDescriptors(Q);
+
+        fprintf("2. Start searching for the image ...\n");
+        topImgs=visualSearch(fileName,AllFeatures);
+        PRValues = computePrValue(topImgs, PRValues,fileName);
+
+        % Plot confusion matrix
+        fprintf("Finally, plot confusion matrix...\n")
+        AllFeaturesLen=length(AllFeatures);
+        computeConfusionMatrix(topImgs,fileName,AllFeaturesLen);
+
+        toc
     end
-    precisionData=[precisionData; [PRValues.P]];
-    reacallData=[reacallData; [PRValues.R]];
-    strQ=strcat("Q is ", num2str(Q));
-    legendNames=[legendNames strQ];
-end
+    % Store PR data
+    precisionData={PRValues.P};
+    precisionData=cell2mat(precisionData);
+    reacallData={PRValues.R};
+    reacallData=cell2mat(reacallData);
+    
+    % Plot PR Curve
+    fprintf("Finally, plot the PR curve...\n")
+    plotPrCurve(precisionData, reacallData, legendNames, fileName);
 
-fprintf("Finally, plot the PR curve...")
-plotPrCurve(precisionData, reacallData, legendNames);
+
+    % Show progress bar
+    % waitbar(j / testDataLen, h, sprintf('Progress: %d%%', round(j/testDataLen*100)));
+end
 toc

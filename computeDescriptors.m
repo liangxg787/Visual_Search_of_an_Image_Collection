@@ -1,4 +1,4 @@
-function computeDescriptors(Q,save_one_file)
+function AllFeatures=computeDescriptors(Q,save_one_file)
 arguments
     % Set the default value for Q
     Q=4
@@ -46,7 +46,7 @@ for filenum=1:allFilesLen
     img=double(imread(imgfname_full))./255;
 
     % Extract feature
-    F=extractRandom(img, Q);
+    F=computeRGBHistogram(img, Q);
 
     % Save feature data
     if save_one_file == 1

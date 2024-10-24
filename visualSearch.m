@@ -1,4 +1,4 @@
-function topImgs=visualSearch(queryImgName)
+function topImgs=visualSearch(queryImgName,AllFeatures)
 % VISUAL_SEARCH Summary of this function goes here
 %
 % [OUTPUTARGS] = VISUAL_SEARCH(INPUTARGS) Explain usage here
@@ -20,13 +20,13 @@ function topImgs=visualSearch(queryImgName)
 %% we are interested in working with
 % DESCRIPTOR_SUBFOLDER=GlobalSetting.filePathInfo.DESCRIPTOR_SUBFOLDER;
 % Define the output file path for feature data
-OUT_FOLDER=GlobalSetting.filePathInfo.DESCRIPTOR_FOLDER;
-allFeatFile=[OUT_FOLDER,'/AllFeatures.mat'];
+% OUT_FOLDER=GlobalSetting.filePathInfo.DESCRIPTOR_FOLDER;
+% allFeatFile=[OUT_FOLDER,'/AllFeatures.mat'];
 
 
 %% 1) Load all the descriptors into "AllFeatures"
 %% each row of AllFeatures is a descriptor (is an image)
-AllFeatures=load(allFeatFile, 'AllFeatures').AllFeatures;
+% AllFeatures=load(allFeatFile, 'AllFeatures').AllFeatures;
 
 %% 2) Get the query image's feature
 % Use strcmp to compare the 'name' field with the queryName
