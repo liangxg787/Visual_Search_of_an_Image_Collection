@@ -1,4 +1,4 @@
-function computeConfusionMatrix(topImgs,queryImgName,dataLen)
+function computeConfusionMatrix(topImgs,queryImgName,dataLen,strQ)
 % COMPUTECONFUSIONMATRIX Summary of this function goes here
 % 
 % [OUTPUTARGS] = COMPUTECONFUSIONMATRIX(INPUTARGS) Explain usage here
@@ -66,7 +66,7 @@ trueLabels=replace(trueLabels,'0',otherClassName);
 fig = figure;
 cm = confusionchart(trueLabels,predictLabels,'RowSummary','row-normalized','ColumnSummary','column-normalized');
 queryImgName_=strrep(queryImgName, '_', '\_');
-cm.Title = 'Confusion Matrix for ' + queryImgName_;
+cm.Title = 'Confusion Matrix for ' + queryImgName_ + 'when ' + strQ;
 fig_Position = fig.Position;
 fig_Position(3) = fig_Position(3)*1.5;
 fig.Position = fig_Position;

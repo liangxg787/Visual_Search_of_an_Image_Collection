@@ -53,7 +53,7 @@ for i = 1:testDataLen
         % Plot confusion matrix
         fprintf("Finally, plot confusion matrix...\n")
         AllFeaturesLen=length(AllFeatures);
-        computeConfusionMatrix(topImgs,fileName,AllFeaturesLen);
+        computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,strQ);
 
         toc
     end
