@@ -43,7 +43,9 @@ NIMG=size(AllFeatures,2);           % number of images in collection
 for i=1:NIMG
     candidate=AllFeatures(:,i);
     candidateFeat=candidate.feature;
-    thedst=compareFeature(foundImgFeat,candidateFeat);
+
+    % Compare the images with distance measure function
+    thedst=eulideanDistance(foundImgFeat,candidateFeat);
     dst=[dst ; [thedst i]];
 end
 dst=sortrows(dst,1);  % sort the results by column 1
