@@ -3,6 +3,7 @@ classdef GlobalSetting
     %   Detailed explanation goes here
 
     properties(Constant=true)
+        SHOW = 591 % The number of the search result 
         filePathInfo = GlobalSetting
     end
     properties

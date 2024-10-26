@@ -1,5 +1,5 @@
-function topImgs=visualSearch(queryImgName,AllFeatures)
-% VISUAL_SEARCH Summary of this function goes here
+function topImgs=rgbHistogramSearch(queryImgName,AllFeatures)
+% rgbHistogramSearch Summary of this function goes here
 %
 % [OUTPUTARGS] = VISUAL_SEARCH(INPUTARGS) Explain usage here
 %
@@ -45,7 +45,7 @@ for i=1:NIMG
     candidateFeat=candidate.feature;
 
     % Compare the images with distance measure function
-    thedst=eulideanDistance(foundImgFeat,candidateFeat);
+    thedst=euclideanDistance(foundImgFeat,candidateFeat);
     dst=[dst ; [thedst i]];
 end
 dst=sortrows(dst,1);  % sort the results by column 1
@@ -54,10 +54,10 @@ dst=sortrows(dst,1);  % sort the results by column 1
 %% These may be a little hard to see using imgshow
 %% If you have access, try using imshow(outdisplay) or imagesc(outdisplay)
 
-SHOW=10; % Show top 10 results
+SHOW=GlobalSetting.SHOW; % Show top N results
 topDst=dst(1:SHOW,:);
 
-% Get top 10 images' data
+% Get top N images' data
 topImgs=AllFeatures(:,topDst(:,2));
 
 %% Show top 10 images

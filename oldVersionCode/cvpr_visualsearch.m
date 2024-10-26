@@ -62,7 +62,7 @@ for i=1:NIMG
     query=ALLFEAT(queryimg,:);
     
     % Compare the images with distance measure function
-    thedst=eulideanDistance(foundImgFeat,candidateFeat);
+    thedst=euclideanDistance(foundImgFeat,candidateFeat);
     dst=[dst ; [thedst i]];
 end
 dst=sortrows(dst,1);  % sort the results by column 1

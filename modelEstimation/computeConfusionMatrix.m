@@ -1,4 +1,11 @@
-function computeConfusionMatrix(topImgs,queryImgName,dataLen,strQ)
+function computeConfusionMatrix(topImgs,queryImgName,dataLen,subSvaingPath,strQ)
+arguments
+    topImgs
+    queryImgName
+    dataLen
+    subSvaingPath
+    strQ=''
+end
 % COMPUTECONFUSIONMATRIX Summary of this function goes here
 % 
 % [OUTPUTARGS] = COMPUTECONFUSIONMATRIX(INPUTARGS) Explain usage here
@@ -66,13 +73,24 @@ trueLabels=replace(trueLabels,'0',otherClassName);
 fig = figure;
 cm = confusionchart(trueLabels,predictLabels,'RowSummary','row-normalized','ColumnSummary','column-normalized');
 queryImgName_=strrep(queryImgName, '_', '\_');
-cm.Title = 'Confusion Matrix for ' + queryImgName_ + 'when ' + strQ;
+if isempty(strQ)
+    cm.Title = 'Confusion Matrix for ' + queryImgName_;
+else
+    cm.Title = 'Confusion Matrix for ' + queryImgName_ + 'when ' + strQ;
+end
+
 fig_Position = fig.Position;
 fig_Position(3) = fig_Position(3)*1.5;
 fig.Position = fig_Position;
 
 % Save the graph as a high-resolution PNG file
-save_path=[GlobalSetting.filePathInfo.CM_GRAPH_PATH, '/', queryImgName, '.png'];
-save_path=strjoin(save_path,'');
-exportgraphics(fig, save_path, 'Resolution', 300);
+saveDir = [GlobalSetting.filePathInfo.CM_GRAPH_PATH, '/', subSvaingPath];
+if ~exist(saveDir, 'dir')
+    % Create the new directory
+    mkdir(saveDir);
+end
+savePath=[saveDir, '/', queryImgName, '.png'];
+savePath=strjoin(savePath,'');
+
+exportgraphics(fig, savePath, 'Resolution', 300);
 end

@@ -1,4 +1,4 @@
-function plotPrCurve(precisionData, reacallData, legendNames, graphName)
+function plotPrCurve(precisionData, reacallData, legendNames, graphName, subSvaingPath)
 % PLOT_PR_CURVE Summary of this function goes here
 % precisionData: Array data for the precision data of N experiments
 % reacallData: Array data for the recall data of N experiments
@@ -26,7 +26,7 @@ end
 
 % Plot curve based on precision_list and reacall_list
 colors = jet(legendLen);  % 'jet' colormap with 'numCurves' colors
-figure('Position',[100 100 400 400]);
+figure('Position',[100 100 500 500]);
 hold on;
 
 h = gobjects(1, legendLen);  % Initialize an array of graphics objects for the curves
@@ -55,6 +55,8 @@ set(legendName,'Box','off')
 % Adjust the axes position for margins
 ax = gca;  % Get current axes
 ax.Position = [0.1, 0.1, 0.8, 0.8];  % [left, bottom, width, height]
+
+
 % Optional: Adjust the figure window size
 set(gcf, 'PaperPositionMode', 'auto');  % Set the paper position mode
 
@@ -63,7 +65,8 @@ set(gca, 'Fontname', 'Times New Roman', 'Fontsize', 10);
 
 % Set the title
 graphNameRe=strrep(graphName,'_','\_');
-title(['PR Curve of ', graphNameRe, ' with different Q values'],'FontSize', 14);
+titleStr=strjoin(['PR Curve of ', graphNameRe, ' with different Q values']);
+title(titleStr,'FontSize', 12);
 % Set the labels
 xlabel('\fontname{Times New Roman}\fontsize{12}Recall');
 ylabel('\fontname{Times New Roman}\fontsize{12}Precision');
@@ -85,6 +88,12 @@ set(gca,'LooseInset',get(gca,'TightInset'));
 box off;
 
 % Save the graph as a high-resolution PNG file
-save_path=[GlobalSetting.filePathInfo.PR_GRAPH_PATH, '/', graphName, '.png'];
-save_path=strjoin(save_path,'');
-exportgraphics(gcf, save_path, 'Resolution', 300);
+saveDir=[GlobalSetting.filePathInfo.PR_GRAPH_PATH, '/', subSvaingPath];
+if ~exist(saveDir, 'dir')
+    % Create the new directory
+    mkdir(saveDir);
+end
+savePath=[saveDir, '/', graphName, '.png'];
+savePath=strjoin(savePath,'');
+
+exportgraphics(gcf, savePath, 'Resolution', 300);

@@ -16,8 +16,11 @@ QLevelLen=length(QLevels);
 testDataFile=GlobalSetting.filePathInfo.TEST_DATA;
 testData=load(testDataFile, 'testFiles').testFiles;
 % Sample test data
-testData=testData(1:2,:);
+% testData=testData(1:2,:);
 testDataLen=length(testData);
+
+% Set the graphs saving path
+subSvaingPath='rgbHist';
 
 tic;
 % add progress bar
@@ -27,7 +30,7 @@ tic;
 % Test every picture in the test dataset and save it's PR curve.
 % Test all test data
 fprintf("Start testing ...\n");
-for i = 1:testDataLen
+parfor i = 1:testDataLen
     currentImg = testData(i);
     fileName = currentImg.name;
     fileName=string(fileName);
@@ -44,16 +47,16 @@ for i = 1:testDataLen
 
         fprintf("Testing when Q = %d\n", Q);
         fprintf("1. Start computing descriptors ...\n");
-        AllFeatures=computeDescriptors(Q);
+        AllFeatures=rgbHistogramDescriptors(Q);
 
         fprintf("2. Start searching for the image ...\n");
-        topImgs=visualSearch(fileName,AllFeatures);
+        topImgs=rgbHistogramSearch(fileName,AllFeatures);
         PRValues = computePrValue(topImgs, PRValues,fileName);
 
         % Plot confusion matrix
-        fprintf("Finally, plot confusion matrix...\n")
-        AllFeaturesLen=length(AllFeatures);
-        computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,strQ);
+        % fprintf("Finally, plot confusion matrix...\n")
+        % AllFeaturesLen=length(AllFeatures);
+        % computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,subSvaingPath,strQ);
 
         toc
     end
@@ -62,10 +65,10 @@ for i = 1:testDataLen
     precisionData=cell2mat(precisionData);
     reacallData={PRValues.R};
     reacallData=cell2mat(reacallData);
-    
+
     % Plot PR Curve
     fprintf("Finally, plot the PR curve...\n")
-    plotPrCurve(precisionData, reacallData, legendNames, fileName);
+    plotPrCurve(precisionData, reacallData, legendNames, fileName, subSvaingPath);
 
 
     % Show progress bar
