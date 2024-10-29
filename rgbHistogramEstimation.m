@@ -16,7 +16,7 @@ QLevelLen=length(QLevels);
 testDataFile=GlobalSetting.filePathInfo.TEST_DATA;
 testData=load(testDataFile, 'testFiles').testFiles;
 % Sample test data
-% testData=testData(1:2,:);
+testData=testData(1:2,:);
 testDataLen=length(testData);
 
 % Set the graphs saving path
@@ -30,7 +30,7 @@ tic;
 % Test every picture in the test dataset and save it's PR curve.
 % Test all test data
 fprintf("Start testing ...\n");
-parfor i = 1:testDataLen
+for i = 1:testDataLen
     currentImg = testData(i);
     fileName = currentImg.name;
     fileName=string(fileName);

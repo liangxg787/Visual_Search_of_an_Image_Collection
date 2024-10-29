@@ -162,6 +162,7 @@ cython_debug/
 #.idea/
 .history
 .DS_Store
+.vscode
 data
 *.asv
 document/._wordcount_selection.tex

@@ -92,5 +92,7 @@ end
 savePath=[saveDir, '/', queryImgName, '.png'];
 savePath=strjoin(savePath,'');
 
-exportgraphics(fig, savePath, 'Resolution', 300);
+% exportgraphics(fig, savePath, 'Resolution', 300);
+% Save the figure as a PNG file with specified margins
+print(gcf, savePath, '-dpng', '-r300');  % '-r300' sets 300 DPI for high resolution
 end
