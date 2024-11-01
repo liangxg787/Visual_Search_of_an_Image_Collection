@@ -40,38 +40,43 @@ classdef Descriptors < handle
         function compute_descriptors(obj)
             %compute_descriptors Summary of this method goes here
             %   Detailed explanation goes here
-            allfiles_len = length(obj.allfiles);
-            for filenum=1:allfiles_len
-                fname=obj.allfiles(filenum).name;
-                fprintf('Processing file %d/%d - %s\n',filenum,allfiles_len,fname);
-                tic;
+            allFilesLen = length(allFiles);
+            for filenum=1:allFilesLen
+                fname=allFiles(filenum).name;
+                % fprintf('Processing file %d/%d - %s\n',filenum,allFilesLen,fname);
+                % Get the image's class number
+                className = split(fname, "_");
+                className = className{1};
+                % tic;
                 imgfname_full=([obj.DATASET_FOLDER,'/Images/',fname]);
                 img=double(imread(imgfname_full))./255;
 
                 % Extract feature
-                F=extractRandom(img, obj.Q);
+                F=computeRGBHistogram(img, Q);
 
                 % Save feature data
                 if obj.save_one_file == 1
                     % Store all the feature data into the struct allFeatures
-                    obj.allFeatures(end+1).name = fname;
-                    obj.allFeatures(end).path = imgfname_full;
-                    obj.allFeatures(end).feature = F;
+                    AllFeatures(end+1).name = fname;
+                    AllFeatures(end).class = className;
+                    AllFeatures(end).path = imgfname_full;
+                    AllFeatures(end).imgData = img;
+                    AllFeatures(end).feature = F;
 
                     % Save all the feature data at the end of for loop
-                    if filenum == allfiles_len
-                        % all_features=obj.allFeatures;
-                        fout=[obj.OUT_FOLDER,'/allFeatures.mat'];
-                        AllFeat=obj.allFeatures;
-                        save(fout,'AllFeat');
+                    if filenum == allFilesLen
+                        % all_features=allFeatures;
+                        fout=[obj.OUT_FOLDER,'/AllFeatures.mat'];
+                        save(fout,'AllFeatures');
                     end
                 else
                     % Save feature data
                     fout=[obj.OUT_SUBFOLDER,'/',fname(1:end-4),'.mat'];%replace .bmp with .mat
                     save(fout,'F');
                 end
-                toc
+                % toc
             end
+
         end
     end
 end

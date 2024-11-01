@@ -49,16 +49,18 @@ hold off;
 % Replace the special symbols in the legendNames
 legendName = legend(h,legendNames,'Location', 'best');
 legendName.ItemTokenSize = [30 30];
-set(legendName,'Box','off')
+set(legendName,'Box','off');
 
 
 % Adjust the axes position for margins
-ax = gca;  % Get current axes
-ax.Position = [0.1, 0.1, 0.8, 0.8];  % [left, bottom, width, height]
+% Get current axes
+ax = gca;
+% Position: [left, bottom, width, height]
+ax.Position = [0.1, 0.1, 0.8, 0.8];
 
 
-% Optional: Adjust the figure window size
-set(gcf, 'PaperPositionMode', 'auto');  % Set the paper position mode
+% Set the paper position mode
+set(gcf, 'PaperPositionMode', 'auto');
 
 % Set the font format of axis
 set(gca, 'Fontname', 'Times New Roman', 'Fontsize', 10);
