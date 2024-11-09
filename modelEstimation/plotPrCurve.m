@@ -26,7 +26,7 @@ end
 
 % Plot curve based on precision_list and reacall_list
 colors = jet(legendLen);  % 'jet' colormap with 'numCurves' colors
-figure('Position',[100 100 500 500]);
+figure('Position',[100 100 500 500],'Visible', 'off');
 hold on;
 
 h = gobjects(1, legendLen);  % Initialize an array of graphics objects for the curves

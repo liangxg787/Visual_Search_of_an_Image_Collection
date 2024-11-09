@@ -49,7 +49,7 @@ for i=1:inputLen
 
 end
 
-PRValues(end+1).name=queryImgName;
+PRValues(end).name=queryImgName;
 PRValues(end).P=precision;
 PRValues(end).R=recall;
 

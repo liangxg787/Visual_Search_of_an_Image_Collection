@@ -9,7 +9,7 @@ clear;
 
 % Experiment with different levels of RGB quantization
 % Make a list of Q values the range from 1 to 8, strading by 2
-QLevels = 5:5:9;
+QLevels = 5:5:10;
 QLevelLen=length(QLevels);
 
 % Load test data
@@ -30,27 +30,29 @@ tic;
 % Test every picture in the test dataset and save it's PR curve.
 % Test all test data
 fprintf("Start testing ...\n");
-for i = 1:testDataLen
-    currentImg = testData(i);
-    fileName = currentImg.name;
-    fileName=string(fileName);
-    fprintf("*** Testing file: %s ...\n", fileName);
-    % Define the Stuct for all features
-    PRValues=struct('name', {}, 'P', {}, 'R', {});
-    % Get the feature data under different Q levels
-    legendNames=strings(1,QLevelLen);
-    for j = 1:QLevelLen
-        tic;
-        Q = QLevels(j);
-        strQ=strcat("Q is ", num2str(Q));
-        legendNames(j)=strQ;
+% Define the Stuct for all features
+PRValues=struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
 
-        fprintf("Testing when Q = %d\n", Q);
-        fprintf("1. Start computing descriptors ...\n");
-        AllFeatures=rgbHistogramDescriptors(Q);
+for j = 1:QLevelLen
+    tic;
+    Q = QLevels(j);
+    label=strcat("Q: ", num2str(Q));
+
+    fprintf("Testing when Q = %d\n", Q);
+    fprintf("1. Start computing descriptors ...\n");
+    AllFeatures=rgbHistogramDescriptors(Q);
+
+    for i = 1:testDataLen
+        currentImg = testData(i);
+        fileName = currentImg.name;
+        fileName=string(fileName);
+        fprintf("*** Testing file: %s ...\n", fileName);
 
         fprintf("2. Start searching for the image ...\n");
         topImgs=rgbHistogramSearch(fileName,AllFeatures);
+
+        % Compute PR value
+        PRValues(end+1).parameter=label;
         PRValues = computePrValue(topImgs, PRValues,fileName);
 
         % Plot confusion matrix
@@ -58,20 +60,41 @@ for i = 1:testDataLen
         % AllFeaturesLen=length(AllFeatures);
         % computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,subSvaingPath,strQ);
 
-        toc
     end
-    % Store PR data
-    precisionData={PRValues.P};
-    precisionData=cell2mat(precisionData);
-    reacallData={PRValues.R};
-    reacallData=cell2mat(reacallData);
-
-    % Plot PR Curve
-    fprintf("Finally, plot the PR curve...\n")
-    plotPrCurve(precisionData, reacallData, legendNames, fileName, subSvaingPath);
-
-
+    toc
     % Show progress bar
     % waitbar(j / testDataLen, h, sprintf('Progress: %d%%', round(j/testDataLen*100)));
 end
+
+% Prepare data for plotting
+parameterData = {PRValues.parameter};
+nameData = {PRValues.name};
+parameterData = cellfun(@(x) num2str(x), {PRValues.parameter}, 'UniformOutput',0);
+nameData = cellfun(@(y) num2str(y), {PRValues.name}, 'UniformOutput',0);
+precisionData = {PRValues.P};
+reacallData = {PRValues.R};
+
+% Get unique values for name, prarameter
+parameterUnique = unique(parameterData);
+nameUnique = unique(nameData);
+
+% Plot PR Curve
+for i = 1:testDataLen
+    fileName = nameUnique{i};
+    fileName=string(fileName);
+
+    % Find the index of the corresponding data
+    idxes = find(strcmp(nameData, fileName));
+
+    legendNames=parameterData(idxes);
+    precisions=precisionData(idxes);
+    reacalls=reacallData(idxes);
+
+    precisions=cell2mat(precisions);
+    reacalls=cell2mat(reacalls);
+
+    fprintf("Finally, plot the PR curve...\n")
+    plotPrCurve(precisions, reacalls, legendNames, fileName, subSvaingPath);
+end
+
 toc

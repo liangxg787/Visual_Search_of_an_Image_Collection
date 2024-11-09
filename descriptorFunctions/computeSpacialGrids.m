@@ -1,7 +1,7 @@
-function AllgridDescriptors = computeSpacialGrids(img,gridPixelSize,featureType, Q)
+function AllgridDescriptors = computeSpacialGrids(img,grids,featureType, Q)
 arguments
     img  % The input image.
-    gridPixelSize % The size of each grid cell in pixels, e.g 3*3, 4*4, etc.
+    grids % The number of grids for row and column respectively, e.g 3*3, 4*4, etc.
     featureType % The type of features to compute ('colour', 'texture', or 'both').
     Q % The quantization level for feature bins or RGB bins.
 end
@@ -26,33 +26,30 @@ end
 rowPixelNum  = size(img, 1);
 colPixelNum  = size(img, 2);
 
-% Calculate the number of grid cells in rows and columns
-gridRowPixel = ceil(rowPixelNum/gridPixelSize);
-gridColPixel = ceil(colPixelNum/gridPixelSize);
+% Calculate the number of pixels for every grid cell in rows and columns
+gridRowPixel = ceil(rowPixelNum/grids);
+gridColPixel = ceil(colPixelNum/grids);
 
 % Calculate the new dimensions of the image after gridding
-newRow=gridRowPixel*gridPixelSize;
-newCol=gridColPixel*gridPixelSize;
+newRow=gridRowPixel*grids;
+newCol=gridColPixel*grids;
 
 % Initialize the matrix to store descriptors for all grid cells
 AllgridDescriptors=[];
 
-% Set the step size for grid cell traversal
-stepPixel=gridPixelSize;
-
 % Traverse each grid cell
-for i=1:stepPixel:newRow-stepPixel+1
-    for j=1:stepPixel:newCol-stepPixel+1
+for i=1:gridRowPixel:newRow-gridRowPixel
+    for j=1:gridColPixel:newCol-gridColPixel
         % Ensure the grid cell does not exceed the image boundaries
-        if i+stepPixel > rowPixelNum
-            i = rowPixelNum-stepPixel;
+        if i+gridRowPixel > rowPixelNum
+            i = rowPixelNum-gridRowPixel;
         end
-        if j+stepPixel > colPixelNum
-            j = colPixelNum-stepPixel;
+        if j+gridColPixel > colPixelNum
+            j = colPixelNum-gridColPixel;
         end
 
         % Extract the current grid cell image
-        gridImg=img(i:i+stepPixel,j:j+stepPixel, :);
+        gridImg=img(i:i+gridRowPixel,j:j+gridColPixel, :);
 
         % Compute descriptors for the grid cell based on the specified feature type
         switch featureType

@@ -7,12 +7,11 @@ clc;
 close all;
 clear;
 
-imgfname_full=([GlobalSetting.filePathInfo.DATASET_FOLDER,'/Images/','1_1_s.bmp']);
+imgfname_full=([GlobalSetting.filePathInfo.DATASET_FOLDER,'/Images/','20_3_s.bmp']);
 img=imread(imgfname_full);
-gridPixelSize=4;
-G=4;
+% The number of grids for row and column respectively
+grids=50;
 % FUNC='RGB';
 FUNC='both';
 Q=4;
-% all_grid_hist=cvpr_computeGrids(img,G,FUNC,Q);
-all_grid_hist=computeSpacialGrids(img,gridPixelSize,FUNC,Q);
+allGridHist=computeSpacialGrids(img,grids,FUNC,Q);
