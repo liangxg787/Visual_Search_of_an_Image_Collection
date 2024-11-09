@@ -71,6 +71,9 @@ for j = 1:QLevelLen
                 fprintf("2. Start searching for the image ...\n");
                 topImgs=spacialGridsSearch(fileName,AllFeatures);
 
+                % Save the result for top n result, n= GlobalSetting.SHOW
+                saveTopImages(topImgs, subSvaingPath, fileName);
+
                 % Compute PR value
                 PRValues(end+1).parameter=label;
                 PRValues = computePrValue(topImgs, PRValues,fileName);

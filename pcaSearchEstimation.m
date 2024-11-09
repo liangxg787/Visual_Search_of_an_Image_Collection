@@ -40,6 +40,11 @@ for i = 1:testDataLen
 
     fprintf("2. Start searching for the image ...\n");
     topImgs=pcaSearch(fileName,AllFeatures);
+
+    % Save the result for top n result, n= GlobalSetting.SHOW
+    saveTopImages(topImgs, subSvaingPath, fileName);
+
+    % Compute PR value
     PRValues = computePrValue(topImgs, PRValues,fileName);
 
     % Plot confusion matrix

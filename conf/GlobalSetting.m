@@ -3,8 +3,9 @@ classdef GlobalSetting
     %   Detailed explanation goes here
 
     properties(Constant=true)
-        % SHOW = 591 % The number of the search result 
-        SHOW = 21
+        % topN=591 % The number of the search result 
+        topN=21
+        SHOW = 10 % The number of showing the search result 
         filePathInfo = GlobalSetting
     end
     properties
@@ -15,6 +16,7 @@ classdef GlobalSetting
         TEST_DATA
         PR_GRAPH_PATH
         CM_GRAPH_PATH
+        SEARCH_RESULTS
     end
 
     methods
@@ -28,6 +30,7 @@ classdef GlobalSetting
             obj.TEST_DATA='data/testData.mat';
             obj.PR_GRAPH_PATH='data/pr_graphs';
             obj.CM_GRAPH_PATH='data/cm_graphs';
+            obj.SEARCH_RESULTS='data/search_results';
         end
 
     end

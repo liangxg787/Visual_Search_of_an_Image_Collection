@@ -46,24 +46,11 @@ dst=sortrows(dst,1);  % sort the results by column 1
 %% These may be a little hard to see using imgshow
 %% If you have access, try using imshow(outdisplay) or imagesc(outdisplay)
 
-SHOW=GlobalSetting.SHOW; % Show top N results
-topDst=dst(1:SHOW,:);
+topN=GlobalSetting.topN;
+topDst=dst(1:topN,:);
 
 % Get top N images' data
 topImgs=AllFeatures(:,topDst(:,2));
-
-%% Show top 10 images
-% outdisplay=[];
-% for i=1:SHOW
-%     % Get the image's data
-%     img=AllFeatures(:,topDst(i,2));
-%     imgData=img.imgData;
-%     imgData=imgData(1:2:end,1:2:end,:); % make image a quarter size
-%     imgData=imgData(1:81,:,:); % crop image to uniform size vertically (some MSVC images are different heights)
-%     outdisplay=[outdisplay imgData];
-% end
-% imgshow(outdisplay);
-% axis off;
 
 
 end
