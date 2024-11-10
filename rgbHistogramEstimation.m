@@ -9,14 +9,14 @@ clear;
 
 % Experiment with different levels of RGB quantization
 % Make a list of Q values the range from 1 to 8, strading by 2
-QLevels = 5:5:9;
+QLevels = 1:5:21;
 QLevelLen=length(QLevels);
 
 % Load test data
 testDataFile=GlobalSetting.filePathInfo.TEST_DATA;
 testData=load(testDataFile, 'testFiles').testFiles;
 % Sample test data
-testData=testData(1:2,:);
+% testData=testData(1:2,:);
 testDataLen=length(testData);
 
 % Define the model type and distance type
@@ -36,7 +36,7 @@ fprintf("Start testing ...\n");
 % Define the Stuct for all features
 PRValues=struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
 
-for j = 1:QLevelLen
+parfor j = 1:QLevelLen
     tic;
     Q = QLevels(j);
     label=strcat("Q: ", num2str(Q));

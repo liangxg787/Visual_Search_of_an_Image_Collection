@@ -12,7 +12,7 @@ clear;
 testDataFile=GlobalSetting.filePathInfo.TEST_DATA;
 testData=load(testDataFile, 'testFiles').testFiles;
 % Sample test data
-testData=testData(1:2,:);
+% testData=testData(1:2,:);
 testDataLen=length(testData);
 
 % Define the model type and distance type
@@ -29,7 +29,7 @@ tic;
 % Test every picture in the test dataset and save it's PR curve.
 % Test all test data
 fprintf("Start testing ...\n");
-for i = 1:testDataLen
+parfor i = 1:testDataLen
     currentImg = testData(i);
     fileName = currentImg.name;
     fileName=string(fileName);

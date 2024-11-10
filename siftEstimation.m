@@ -12,7 +12,7 @@ clear;
 testDataFile=GlobalSetting.filePathInfo.TEST_DATA;
 testData=load(testDataFile, 'testFiles').testFiles;
 % Sample test data
-testData=testData(1:2,:);
+% testData=testData(1:2,:);
 testDataLen=length(testData);
 
 % Define the model type and distance type
@@ -22,13 +22,13 @@ distanceType = 'euclideanMatrix';
 subSvaingPath=ModelType;
 
 % Experiment with different levels of RGB quantization
-% Make a list of Q values the range from 1 to 30, strading by 5
-NumOctavesList = 3:1:3;
+% Make a list of NumOctaves values the range from 3 to 10, strading by 2
+NumOctavesList = 3:2:11;
 NumOctavesLen=length(NumOctavesList);
 
 % Experiment with different levels of the size of each grid cell in pixels,e.g 3*3, 4*4, etc
-% Make a list of gridPixelSize values the range from 5 to 50, strading by 5
-NumLevelsList = 3:1:3;
+% Make a list of NumLevels values the range from 5 to 50, strading by 5
+NumLevelsList = 5:5:25;
 NumLevelsLen=length(NumLevelsList);
 
 tic;
@@ -43,7 +43,7 @@ fprintf("Start testing ...\n");
 PRValues=struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
 
 % Get the feature data under different NumOctaves
-for j = 1:NumOctavesLen
+parfor j = 1:NumOctavesLen
     NumOctaves = NumOctavesList(j);
     tic;
     % Get the feature data under different NumLevels

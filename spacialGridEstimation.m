@@ -9,12 +9,12 @@ clear;
 
 % Experiment with different levels of RGB quantization
 % Make a list of Q values the range from 1 to 30, strading by 5
-QLevels = 5:5:10;
+QLevels = 1:5:21;
 QLevelLen=length(QLevels);
 
 % Experiment with different levels of the size of each grid cell in pixels,e.g 3*3, 4*4, etc
 % Make a list of gridPixelSize values the range from 5 to 50, strading by 5
-gridsList = 5:5:10;
+gridsList = 10:10:50;
 gridsLen=length(gridsList);
 
 % featureTypeList = {'colour', 'texture', 'both'};
@@ -25,7 +25,7 @@ featureTypeLen=length(featureTypeList);
 testDataFile=GlobalSetting.filePathInfo.TEST_DATA;
 testData=load(testDataFile, 'testFiles').testFiles;
 % Sample test data
-testData=testData(1:2,:);
+% testData=testData(1:2,:);
 testDataLen=length(testData);
 
 % Define the model type and distance type
@@ -46,7 +46,7 @@ fprintf("Start testing ...\n");
 PRValues=struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
 
 % Get the feature data under different Q levels
-for j = 1:QLevelLen
+parfor j = 1:QLevelLen
     Q = QLevels(j);
     tic;
     % Get the feature data under different gridPixelSize

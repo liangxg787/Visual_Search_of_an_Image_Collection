@@ -13,7 +13,8 @@ allFiles = GlobalSetting.filePathInfo.allFiles;
 filesLen = length(allFiles);
 
 % Set the test ratio
-testRatio = 0.2;
+% testRatio = 0.2;
+testRatio = 1;
 numTest = round(testRatio*filesLen);
 
 % Get the test files
