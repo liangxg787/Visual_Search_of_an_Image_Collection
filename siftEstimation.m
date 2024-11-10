@@ -18,6 +18,16 @@ testDataLen=length(testData);
 % Set the graphs saving path
 subSvaingPath='sift';
 
+% Experiment with different levels of RGB quantization
+% Make a list of Q values the range from 1 to 30, strading by 5
+NumOctavesList = 3:1:6;
+NumOctavesLen=length(NumOctavesList);
+
+% Experiment with different levels of the size of each grid cell in pixels,e.g 3*3, 4*4, etc
+% Make a list of gridPixelSize values the range from 5 to 50, strading by 5
+NumLevelsList = 3:1:6;
+NumLevelsLen=length(NumLevelsList);
+
 tic;
 % add progress bar
 % h = waitbar(0, 'Testing data...');
@@ -33,30 +43,47 @@ PRValues=struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
 fprintf("1. Start computing descriptors ...\n");
 AllFeatures=siftDescriptors();
 
-for i = 1:testDataLen
-    currentImg = testData(i);
-    fileName = currentImg.name;
-    fileName=string(fileName);
-    fprintf("*** Testing file: %s ...\n", fileName);
+% Get the feature data under different NumOctaves
+for j = 1:NumOctavesLen
+    NumOctaves = NumOctavesList(j);
+    tic;
+    % Get the feature data under different NumLevels
+    for k = 1:NumLevelsLen
+        NumLevels = NumLevelsList(k);
+        NumLevels = cell2mat(NumLevels);
 
-    fprintf("2. Start searching for the image ...\n");
-    topImgs=siftSearch(fileName,AllFeatures);
-    
-    % Save the result for top n result, n= GlobalSetting.SHOW
-    saveTopImages(topImgs, subSvaingPath, fileName);
+        label=strcat("NumOctaves:", num2str(NumOctaves), ', NumLevels:', num2str(NumLevels));
 
-    % Compute PR value
-    PRValues(end+1).parameter=label;
-    PRValues = computePrValue(topImgs, PRValues,fileName);
+        fprintf("Testing when %s\n", label);
+        fprintf("1. Start computing descriptors ...\n");
+        AllFeatures = siftDescriptors(NumOctaves,NumLevels);
 
-    % Plot confusion matrix
-    % fprintf("Finally, plot confusion matrix...\n")
-    % AllFeaturesLen=length(AllFeatures);
-    % computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,subSvaingPath,strQ);
+        for i = 1:testDataLen
+            currentImg = testData(i);
+            fileName = currentImg.name;
+            fileName=string(fileName);
+            fprintf("*** Testing file: %s ...\n", fileName);
 
-      % Show progress bar
+            fprintf("2. Start searching for the image ...\n");
+            topImgs=spacialGridsSearch(fileName,AllFeatures);
+
+            % Save the result for top n result, n= GlobalSetting.SHOW
+            saveTopImages(topImgs, subSvaingPath, fileName);
+
+            % Compute PR value
+            PRValues(end+1).parameter=label;
+            PRValues = computePrValue(topImgs, PRValues,fileName);
+
+            % Plot confusion matrix
+            % fprintf("Finally, plot confusion matrix...\n")
+            % AllFeaturesLen=length(AllFeatures);
+            % computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,subSvaingPath,strQ);
+        end
+
+    end
+    toc
+    % Show progress bar
     % waitbar(j / testDataLen, h, sprintf('Progress: %d%%', round(j/testDataLen*100)));
-
 end
 
 % Prepare data for plotting

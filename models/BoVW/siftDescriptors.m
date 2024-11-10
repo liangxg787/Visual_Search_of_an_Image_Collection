@@ -1,5 +1,7 @@
-function AllFeatures = siftDescriptors(save_one_file)
+function AllFeatures = siftDescriptors(NumOctaves,NumLevels,save_one_file)
 arguments
+  NumOctaves  Number of octaves of the Gaussian scale space.
+  NumLevels   Number of scale levels within each octave.
   % If save_one_file is 1, save all the
   % feature data into one file, otherwise save the feature
   % data by the file names
@@ -44,7 +46,7 @@ for filenum=1:allFilesLen
     img=double(imread(imgfname_full))./255;
 
     % Extract feature
-    F=computeSIFT(img);
+    F=computeSIFT(img,NumOctaves,NumLevels);
 
     % Save feature data
     if save_one_file == 1
