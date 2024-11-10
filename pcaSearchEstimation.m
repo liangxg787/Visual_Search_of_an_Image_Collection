@@ -18,6 +18,10 @@ testDataLen=length(testData);
 % Set the graphs saving path
 subSvaingPath='pca';
 
+% Define the model type and distance type
+ModelType = 'PCA';
+distanceType = 'euclidean';
+
 tic;
 % add progress bar
 % h = waitbar(0, 'Testing data...');
@@ -34,12 +38,11 @@ for i = 1:testDataLen
     % Define the Stuct for all features
     PRValues=struct('name', {}, 'P', {}, 'R', {});
 
-
     fprintf("1. Start computing descriptors ...\n");
-    AllFeatures=pcaDescriptors();
+    AllFeatures=computeDescriptors(ModelType);
 
     fprintf("2. Start searching for the image ...\n");
-    topImgs=pcaSearch(fileName,AllFeatures);
+    topImgs=searchFunction(distanceType,fileName,AllFeatures);
 
     % Save the result for top n result, n= GlobalSetting.SHOW
     saveTopImages(topImgs, subSvaingPath, fileName);

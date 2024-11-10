@@ -1,4 +1,4 @@
-function topImgs = spacialGridsSearch(queryImgName,AllFeatures)
+function topImgs = spacialGridSearch(queryImgName,AllFeatures)
 % SPACIALGRIDSSEARCH Summary of this function goes here
 % 
 % [OUTPUTARGS] = SPACIALGRIDSSEARCH(INPUTARGS) Explain usage here

@@ -1,20 +1,20 @@
-function AllgridDescriptors = computeSpacialGrids(img,grids,featureType, Q)
+function AllgridDescriptors = computeSpacialGrid(img,grids,featureType, Q)
 arguments
     img  % The input image.
     grids % The number of grids for row and column respectively, e.g 3*3, 4*4, etc.
     featureType % The type of features to compute ('colour', 'texture', or 'both').
     Q % The quantization level for feature bins or RGB bins.
 end
-% COMPUTESPACIALGRIDS Computes descriptors for grid cells based on the specified feature type.
+% COMPUTESPACIALGRID Computes descriptors for grid cells based on the specified feature type.
 %
-% AllgridDescriptors = COMPUTESPACIALGRIDS(IMG, GRIDPIXELSIZE, FEATURETYPE, Q) computes descriptors
+% AllgridDescriptors = COMPUTESPACIALGRID(IMG, GRIDPIXELSIZE, FEATURETYPE, Q) computes descriptors
 % for each grid cell of an image based on the specified feature type (colour, texture, or both),
 % and returns a matrix containing the descriptors for all grid cells.
 %
 % Examples:
-%   computeSpacialGrids(img, 64, 'colour', 8);
-%   computeSpacialGrids(img, 32, 'texture', 4);
-%   computeSpacialGrids(img, 16, 'both', 16);
+%   computeSpacialGrid(img, 64, 'colour', 8);
+%   computeSpacialGrid(img, 32, 'texture', 4);
+%   computeSpacialGrid(img, 16, 'both', 16);
 %
 % See also: computeRGBHistogram, computeEdgeOrientationHistogram
 

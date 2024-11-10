@@ -22,6 +22,10 @@ testDataLen=length(testData);
 % Set the graphs saving path
 subSvaingPath='rgbHist';
 
+% Define the model type and distance type
+ModelType = 'RGBHist';
+distanceType = 'euclidean';
+
 tic;
 % add progress bar
 % h = waitbar(0, 'Testing data...');
@@ -40,7 +44,7 @@ for j = 1:QLevelLen
 
     fprintf("Testing when Q = %d\n", Q);
     fprintf("1. Start computing descriptors ...\n");
-    AllFeatures=rgbHistogramDescriptors(Q);
+    AllFeatures=computeDescriptors(ModelType, Q);
 
     for i = 1:testDataLen
         currentImg = testData(i);
@@ -49,7 +53,7 @@ for j = 1:QLevelLen
         fprintf("*** Testing file: %s ...\n", fileName);
 
         fprintf("2. Start searching for the image ...\n");
-        topImgs=rgbHistogramSearch(fileName,AllFeatures);
+        topImgs=searchFunction(distanceType,fileName,AllFeatures);
         
         % Save the result for top n result, n= GlobalSetting.SHOW
         saveTopImages(topImgs, subSvaingPath, fileName);

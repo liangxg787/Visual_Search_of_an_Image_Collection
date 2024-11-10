@@ -18,6 +18,10 @@ testDataLen=length(testData);
 % Set the graphs saving path
 subSvaingPath='sift';
 
+% Define the model type and distance type
+ModelType = 'SIFT';
+distanceType = 'euclidean';
+
 % Experiment with different levels of RGB quantization
 % Make a list of Q values the range from 1 to 30, strading by 5
 NumOctavesList = 3:1:3;
@@ -51,7 +55,7 @@ for j = 1:NumOctavesLen
 
         fprintf("Testing when %s\n", label);
         fprintf("1. Start computing descriptors ...\n");
-        AllFeatures = siftDescriptors(NumOctaves,NumLevels);
+        AllFeatures = computeDescriptors(ModelType,NumOctaves,NumLevels);
 
         for i = 1:testDataLen
             currentImg = testData(i);
@@ -60,7 +64,7 @@ for j = 1:NumOctavesLen
             fprintf("*** Testing file: %s ...\n", fileName);
 
             fprintf("2. Start searching for the image ...\n");
-            topImgs=siftSearch(fileName,AllFeatures);
+            topImgs=searchFunction(distanceType,fileName,AllFeatures);
 
             % Save the result for top n result, n= GlobalSetting.SHOW
             saveTopImages(topImgs, subSvaingPath, fileName);
