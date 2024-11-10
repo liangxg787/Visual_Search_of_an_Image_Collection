@@ -44,7 +44,7 @@ fprintf("1. Start computing descriptors ...\n");
 AllFeatures=siftDescriptors();
 
 % Get the feature data under different NumOctaves
-for j = 1:NumOctavesLen
+parfor j = 1:NumOctavesLen
     NumOctaves = NumOctavesList(j);
     tic;
     % Get the feature data under different NumLevels
