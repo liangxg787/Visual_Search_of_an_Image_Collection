@@ -7,6 +7,9 @@ classdef GlobalSetting
         % topN=21
         SHOW = 10 % The number of showing the search result 
         filePathInfo = GlobalSetting
+
+        % Parameters for SIFT
+        nCorners=100
     end
     properties
         DATASET_FOLDER

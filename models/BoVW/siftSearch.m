@@ -30,7 +30,7 @@ for i=1:NIMG
     candidateFeat=candidate.feature;
 
     % Compare the images with distance measure function
-    thedst=euclideanDistance(foundImgFeat,candidateFeat);
+    thedst=euclideanDistanceForMatrix(foundImgFeat,candidateFeat);
     dst=[dst ; [thedst i]];
 end
 dst=sortrows(dst,1);  % sort the results by column 1
