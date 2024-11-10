@@ -58,9 +58,6 @@ for i = 1:testDataLen
     % waitbar(j / testDataLen, h, sprintf('Progress: %d%%', round(j/testDataLen*100)));
 
 end
-toc
-  
-
 
 % Prepare data for plotting
 parameterData = {PRValues.parameter};
