@@ -34,7 +34,7 @@ classdef GlobalSetting
             obj.PR_GRAPH_PATH='data/pr_graphs';
             obj.CM_GRAPH_PATH='data/cm_graphs';
             obj.SEARCH_RESULTS='data/search_results';
-            obj.SIFT_TEST_IMAGES='data/test_images';
+            obj.SIFT_TEST_IMAGES='data/testimages';
         end
 
     end
