@@ -17,7 +17,7 @@ testDataLen=length(testData);
 
 % Define the model type and distance type
 ModelType = 'SIFT';
-distanceType = 'euclidean';
+distanceType = 'euclideanMatrix';
 % Set the graphs saving path
 subSvaingPath=ModelType;
 
