@@ -39,18 +39,13 @@ fprintf("Start testing ...\n");
 % Define the Stuct for all features
 PRValues=struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
 
-
-fprintf("1. Start computing descriptors ...\n");
-AllFeatures=siftDescriptors();
-
 % Get the feature data under different NumOctaves
-parfor j = 1:NumOctavesLen
+for j = 1:NumOctavesLen
     NumOctaves = NumOctavesList(j);
     tic;
     % Get the feature data under different NumLevels
     for k = 1:NumLevelsLen
         NumLevels = NumLevelsList(k);
-        NumLevels = cell2mat(NumLevels);
 
         label=strcat("NumOctaves:", num2str(NumOctaves), ', NumLevels:', num2str(NumLevels));
 

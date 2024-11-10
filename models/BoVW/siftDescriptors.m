@@ -1,7 +1,7 @@
 function AllFeatures = siftDescriptors(NumOctaves,NumLevels,save_one_file)
 arguments
-  NumOctaves  Number of octaves of the Gaussian scale space.
-  NumLevels   Number of scale levels within each octave.
+  NumOctaves  % Number of octaves of the Gaussian scale space.
+  NumLevels   % Number of scale levels within each octave.
   % If save_one_file is 1, save all the
   % feature data into one file, otherwise save the feature
   % data by the file names
