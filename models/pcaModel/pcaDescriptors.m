@@ -20,7 +20,7 @@ end
 % Revision: 0.1 
 
 
-%% Edit the following line to the folder you unzipped the MSRCv2 dataset to
+%% Path for the MSRCv2 dataset
 DATASET_FOLDER = GlobalSetting.filePathInfo.DATASET_FOLDER;
 
 %% and within that folder, create another folder to hold these descriptors

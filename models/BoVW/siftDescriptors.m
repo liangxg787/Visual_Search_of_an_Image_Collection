@@ -1,13 +1,7 @@
-function AllFeatures = spacialGridsDescriptors(featureType,grids,Q,save_one_file)
-arguments
-    featureType % The type of features to compute ('colour', 'texture', or 'both').
-    grids % The number of grids for row and column respectively, e.g 3*3, 4*4, etc.
-    Q % The quantization level for feature bins or RGB bins.
-    save_one_file=1 % Save all the feature data into one file or not.
-end
-% SPACIALGRIDSDESCRIPTORS Summary of this function goes here
+function [outputArgs] = siftDescriptors(inputArgs)
+% SIFTDESCRIPTORS Summary of this function goes here
 % 
-% [OUTPUTARGS] = SPACIALGRIDSDESCRIPTORS(INPUTARGS) Explain usage here
+% [OUTPUTARGS] = SIFTDESCRIPTORS(INPUTARGS) Explain usage here
 % 
 % Examples: 
 % 
@@ -16,7 +10,7 @@ end
 % See also: List related files here
 
 % Author: Xiaoguang Liang, University of Surrey 
-% Date: 2024/10/30 11:32:16 
+% Date: 2024/11/10 11:34:43 
 % Revision: 0.1 
 
 %% Path for the MSRCv2 dataset
@@ -44,7 +38,7 @@ for filenum=1:allFilesLen
     img=double(imread(imgfname_full))./255;
 
     % Extract feature
-    F=computeSpacialGrids(img,grids,featureType,Q);
+    F=computeSIFT(img);
 
     % Save feature data
     if save_one_file == 1
@@ -58,7 +52,7 @@ for filenum=1:allFilesLen
         % Save all the feature data at the end of for loop
         if filenum == allFilesLen
             % all_features=allFeatures;
-            fout=[OUT_FOLDER,'/AllFeatures.mat'];
+            fout=[OUT_FOLDER,'/AllFeaturesRGBHist.mat'];
             save(fout,'AllFeatures');
         end
     else
