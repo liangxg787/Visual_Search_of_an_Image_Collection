@@ -1,0 +1,96 @@
+%% Author: Xiaoguang Liang (PG/T - Comp Sci & Elec Eng)
+%% University of Surrey, United Kingdom
+%% Email address: xl01339@surrey.ac.uk
+%% Time: 10/11/2024 14:18
+
+clc;
+close all;
+clear;
+
+
+% Load test data
+testDataFile=GlobalSetting.filePathInfo.TEST_DATA;
+testData=load(testDataFile, 'testFiles').testFiles;
+% Sample test data
+testData=testData(1:2,:);
+testDataLen=length(testData);
+
+% Set the graphs saving path
+subSvaingPath='sift';
+
+tic;
+% add progress bar
+% h = waitbar(0, 'Testing data...');
+
+% Starting parallel pool to accelerate the computing with parfor
+% Test every picture in the test dataset and save it's PR curve.
+% Test all test data
+fprintf("Start testing ...\n");
+% Define the Stuct for all features
+PRValues=struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
+
+
+fprintf("1. Start computing descriptors ...\n");
+AllFeatures=siftDescriptors();
+
+for i = 1:testDataLen
+    currentImg = testData(i);
+    fileName = currentImg.name;
+    fileName=string(fileName);
+    fprintf("*** Testing file: %s ...\n", fileName);
+
+    fprintf("2. Start searching for the image ...\n");
+    topImgs=siftSearch(fileName,AllFeatures);
+    
+    % Save the result for top n result, n= GlobalSetting.SHOW
+    saveTopImages(topImgs, subSvaingPath, fileName);
+
+    % Compute PR value
+    PRValues(end+1).parameter=label;
+    PRValues = computePrValue(topImgs, PRValues,fileName);
+
+    % Plot confusion matrix
+    % fprintf("Finally, plot confusion matrix...\n")
+    % AllFeaturesLen=length(AllFeatures);
+    % computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,subSvaingPath,strQ);
+
+      % Show progress bar
+    % waitbar(j / testDataLen, h, sprintf('Progress: %d%%', round(j/testDataLen*100)));
+
+end
+toc
+  
+
+
+% Prepare data for plotting
+parameterData = {PRValues.parameter};
+nameData = {PRValues.name};
+parameterData = cellfun(@(x) num2str(x), {PRValues.parameter}, 'UniformOutput',0);
+nameData = cellfun(@(y) num2str(y), {PRValues.name}, 'UniformOutput',0);
+precisionData = {PRValues.P};
+reacallData = {PRValues.R};
+
+% Get unique values for name, prarameter
+parameterUnique = unique(parameterData);
+nameUnique = unique(nameData);
+
+% Plot PR Curve
+for i = 1:testDataLen
+    fileName = nameUnique{i};
+    fileName=string(fileName);
+
+    % Find the index of the corresponding data
+    idxes = find(strcmp(nameData, fileName));
+
+    legendNames=parameterData(idxes);
+    precisions=precisionData(idxes);
+    reacalls=reacallData(idxes);
+
+    precisions=cell2mat(precisions);
+    reacalls=cell2mat(reacalls);
+
+    fprintf("Finally, plot the PR curve...\n")
+    plotPrCurve(precisions, reacalls, legendNames, fileName, subSvaingPath);
+end
+
+toc

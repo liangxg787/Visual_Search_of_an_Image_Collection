@@ -1,4 +1,4 @@
-function [outputArgs] = siftDescriptors(inputArgs)
+function AllFeatures = siftDescriptors()
 % SIFTDESCRIPTORS Summary of this function goes here
 % 
 % [OUTPUTARGS] = SIFTDESCRIPTORS(INPUTARGS) Explain usage here

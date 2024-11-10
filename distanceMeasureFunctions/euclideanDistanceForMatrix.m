@@ -13,26 +13,26 @@ function similarity = euclideanDistanceForMatrix(arr1, arr2)
 % Date: 2024/11/10 12:54:33
 % Revision: 0.1
 
-% 获取矩阵的大小
+% Get the size of the matrix
 [rows1, cols1] = size(arr1);
 [rows2, cols2] = size(arr2);
 
-% 如果矩阵大小不一样，截取二者最小的相交范围
+% If not equal, find the minimum size
 if rows1 ~= rows2 || cols1 ~= cols2
     minRows = min(rows1, rows2);
     minCols = min(cols1, cols2);
-    % 截取两个矩阵的左上角区域
+    % Crop the two matrices on the left top corner
     differ = arr1(1:minRows, 1:minCols) - arr2(1:minRows, 1:minCols);
 else
-    % 如果大小相同，直接相减
+    % If the size is the same, subtract directly
     differ = arr1 - arr2;
 end
 
-% 计算差异平方和
+% Calculate the squared difference
 numerator = sum(differ(:).^2);
-% 计算 arr1 的平方和
+% Calculate the squared sum of arr1
 denominator = sum(arr1(:).^2);
-% 计算相似度
+% Calculate the similarity
 similarity = 1 - (numerator / denominator);
 
 
