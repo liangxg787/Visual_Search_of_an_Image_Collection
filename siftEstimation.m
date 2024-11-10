@@ -60,7 +60,7 @@ for j = 1:NumOctavesLen
             fprintf("*** Testing file: %s ...\n", fileName);
 
             fprintf("2. Start searching for the image ...\n");
-            topImgs=spacialGridsSearch(fileName,AllFeatures);
+            topImgs=siftSearch(fileName,AllFeatures);
 
             % Save the result for top n result, n= GlobalSetting.SHOW
             saveTopImages(topImgs, subSvaingPath, fileName);
