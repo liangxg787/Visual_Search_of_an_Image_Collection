@@ -3,8 +3,8 @@ clear all;
 
 % IMAGE1='testimages/wall1.jpg';
 % IMAGE2='testimages/wall2.jpg';
-% IMAGE1 = [GlobalSetting.filePathInfo.SIFT_TEST_IMAGES, '/wall1.jpg'];
-% IMAGE2 = [GlobalSetting.filePathInfo.SIFT_TEST_IMAGES, '/wall2.jpg'];
+IMAGE1 = [GlobalSetting.filePathInfo.SIFT_TEST_IMAGES, '/wall1.jpg'];
+IMAGE2 = [GlobalSetting.filePathInfo.SIFT_TEST_IMAGES, '/wall2.jpg'];
 IMAGE1 = [GlobalSetting.filePathInfo.DATASET_FOLDER, '/Images/1_1_s.bmp'];
 IMAGE2 = [GlobalSetting.filePathInfo.DATASET_FOLDER, '/Images/1_2_s.bmp'];
 
