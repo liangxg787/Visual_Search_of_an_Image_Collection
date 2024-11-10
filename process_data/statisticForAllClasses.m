@@ -32,5 +32,5 @@ for i = 1:length(allFiles)
 end
 
 % Store the dictionary to a file
-classDictFile = 'data/ClassDict.mat';
+classDictFile = GlobalSetting.filePathInfo.CLASS_DICT;
 save(classDictFile, 'ClassDict');

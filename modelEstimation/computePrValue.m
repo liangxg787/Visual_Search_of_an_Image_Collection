@@ -14,7 +14,7 @@ function PRValues = computePrValue(topImgs,PRValues,queryImgName)
 % Revision: 0.1 
 
 % Load statistic data for all classes
-classDictFile = 'data/ClassDict.mat';
+classDictFile = GlobalSetting.filePathInfo.CLASS_DICT;
 classDict=load(classDictFile, "ClassDict").ClassDict;
 
 inputLen=size(topImgs,2);

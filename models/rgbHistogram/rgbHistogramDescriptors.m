@@ -60,7 +60,7 @@ for filenum=1:allFilesLen
         % Save all the feature data at the end of for loop
         if filenum == allFilesLen
             % all_features=allFeatures;
-            fout=[OUT_FOLDER,'/AllFeatures.mat'];
+            fout=[OUT_FOLDER,'/AllFeaturesRGBHist.mat'];
             save(fout,'AllFeatures');
         end
     else

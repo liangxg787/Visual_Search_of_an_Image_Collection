@@ -9,7 +9,7 @@ clear;
 
 % Experiment with different levels of RGB quantization
 % Make a list of Q values the range from 1 to 8, strading by 2
-QLevels = 5:5:10;
+QLevels = 5:5:9;
 QLevelLen=length(QLevels);
 
 % Load test data
