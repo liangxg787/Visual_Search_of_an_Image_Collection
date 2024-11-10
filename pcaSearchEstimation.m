@@ -15,12 +15,11 @@ testData=load(testDataFile, 'testFiles').testFiles;
 testData=testData(1:2,:);
 testDataLen=length(testData);
 
-% Set the graphs saving path
-subSvaingPath='pca';
-
 % Define the model type and distance type
 ModelType = 'PCA';
-distanceType = 'euclidean';
+distanceType = 'Eigen_Mahalanobis';
+% Set the graphs saving path
+subSvaingPath=ModelType;
 
 tic;
 % add progress bar

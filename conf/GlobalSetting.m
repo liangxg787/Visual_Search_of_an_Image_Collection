@@ -3,8 +3,8 @@ classdef GlobalSetting
     %   Detailed explanation goes here
 
     properties(Constant=true)
-        topN=591 % The number of the search result 
-        % topN=21
+        % topN=591 % The number of the search result 
+        topN=21
         SHOW = 10 % The number of showing the search result 
         filePathInfo = GlobalSetting
     end

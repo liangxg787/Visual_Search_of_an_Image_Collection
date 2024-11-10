@@ -27,7 +27,7 @@ for i=1:SHOW
 end
 
 % Display all the results
-imgshow(outdisplay);
+% imgshow(outdisplay);
 
 % Save the graph as a high-resolution PNG file
 saveDir = [GlobalSetting.filePathInfo.SEARCH_RESULTS, '/', subSvaingPath];

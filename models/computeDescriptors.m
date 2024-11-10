@@ -29,7 +29,7 @@ OUT_SUBFOLDER=GlobalSetting.filePathInfo.DESCRIPTOR_SUBFOLDER;
 allFiles=GlobalSetting.filePathInfo.allFiles;
 
 % Define the Stuct for all features
-AllFeatures=struct('name', {}, 'class', {}, 'path', {}, 'imgData', {}, 'feature', {});
+AllFeatures=struct('name', {}, 'class', {}, 'path', {}, 'imgData', {}, 'feature', {}, 'obs', {});
 
 allFilesLen = length(allFiles);
 for filenum=1:allFilesLen
@@ -50,10 +50,10 @@ for filenum=1:allFilesLen
             F=computeRGBHistogram(img, Q);
         case 'spacialGrid'
             % Parse the input arguments: varargin
-            grids = varargin{1};
-            featureType = varargin{2};
+            featureType = varargin{1};
+            grids = varargin{2};
             Q = varargin{3};
-            F=computeSpacialGrid(img,grids,featureType,Q);
+            F=computeSpacialGrid(img,featureType,grids,Q);
         case 'PCA'
             obs=[reshape(img(:,:,1),1,[]); reshape(img(:,:,2),1,[]); reshape(img(:,:,3),1,[])];
             method='keepf';
@@ -61,7 +61,6 @@ for filenum=1:allFilesLen
             % method='keepn';
             % eigen-vector keep 1 dimension, so that the distance is a number instead of a matrix
             % dimensions=1;
-            img=obs;
             [~, F]=Eigen_PCA(obs,method,energyRate);
         case 'SIFT'
             % Parse the input arguments: varargin
@@ -81,10 +80,14 @@ for filenum=1:allFilesLen
         AllFeatures(end).imgData = img;
         AllFeatures(end).feature = F;
 
+        if strcmp(ModelType, 'PCA')
+            AllFeatures(end).obs = obs;
+        end
+
         % Save all the feature data at the end of for loop
         if filenum == allFilesLen
             % all_features=allFeatures;
-            fout=[OUT_FOLDER,'/AllFeaturesRGBHist.mat'];
+            fout=[OUT_FOLDER,'/AllFeatures', ModelType, '.mat'];
             save(fout,'AllFeatures');
         end
     else

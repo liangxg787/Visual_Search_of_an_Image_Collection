@@ -49,6 +49,12 @@ for i=1:inputLen
 
 end
 
+if isempty(PRValues)
+  PRValues(end+1).name=queryImgName;
+else
+  PRValues(end).name=queryImgName;
+end
+
 PRValues(end).name=queryImgName;
 PRValues(end).P=precision;
 PRValues(end).R=recall;

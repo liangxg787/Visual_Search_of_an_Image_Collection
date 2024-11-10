@@ -1,17 +1,17 @@
 function topImgs = searchFunction(distanceType,queryImgName,AllFeatures)
 % SEARCHFUNCTION Summary of this function goes here
-% 
+%
 % [OUTPUTARGS] = SEARCHFUNCTION(INPUTARGS) Explain usage here
-% 
-% Examples: 
-% 
+%
+% Examples:
+%
 % Provide sample usage code here
-% 
+%
 % See also: List related files here
 
-% Author: Xiaoguang Liang, University of Surrey 
-% Date: 2024/11/2 18:40:26 
-% Revision: 0.1 
+% Author: Xiaoguang Liang, University of Surrey
+% Date: 2024/11/2 18:40:26
+% Revision: 0.1
 
 %% Edit the following line to the folder you unzipped the MSRCv2 dataset to
 % DATASET_FOLDER = GlobalSetting.filePathInfo.DATASET_FOLDER;
@@ -45,15 +45,20 @@ for i=1:NIMG
         case 'euclidean'
             thedst=euclideanDistance(foundImgFeat,candidateFeat);
         case 'euclideanMatrix'
-          thedst=euclideanDistanceForMatrix(foundImgFeat,candidateFeat);
+            thedst=euclideanDistanceForMatrix(foundImgFeat,candidateFeat);
         case 'cosine'
             thedst=cosineDistance(foundImgFeat,candidateFeat);
         case 'mahalanobis'
             thedst=mahalanobisDistance(foundImgFeat,candidateFeat);
         case 'manhattan'
-          thedst=manhattanDistance(foundImgFeat,candidateFeat);
+            thedst=manhattanDistance(foundImgFeat,candidateFeat);
         case 'pearson'
-          thedst=pearsonCorrelationCoefficient(foundImgFeat,candidateFeat);
+            thedst=pearsonCorrelationCoefficient(foundImgFeat,candidateFeat);
+        case 'Eigen_Mahalanobis'
+            foundImgobs= foundImg.obs;
+            thedst=Eigen_Mahalanobis(foundImgobs,candidateFeat);
+            % sumDst=sum(thedst(:));
+            thedst=mean(thedst(:));
         otherwise
             error(['Unknown parameter: ' distanceType]) ;
     end

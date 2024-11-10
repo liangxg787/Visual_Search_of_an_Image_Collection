@@ -15,12 +15,11 @@ testData=load(testDataFile, 'testFiles').testFiles;
 testData=testData(1:2,:);
 testDataLen=length(testData);
 
-% Set the graphs saving path
-subSvaingPath='sift';
-
 % Define the model type and distance type
 ModelType = 'SIFT';
 distanceType = 'euclidean';
+% Set the graphs saving path
+subSvaingPath=ModelType;
 
 % Experiment with different levels of RGB quantization
 % Make a list of Q values the range from 1 to 30, strading by 5
