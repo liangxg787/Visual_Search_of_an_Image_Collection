@@ -1,4 +1,4 @@
-function similarity = euclideanDistanceForMatrix(arr1, arr2)
+function dst = euclideanDistanceForMatrix(arr1, arr2)
 % EUCLIDEANDISTANCEFORMATRIX Summary of this function goes here
 %
 % [OUTPUTARGS] = EUCLIDEANDISTANCEFORMATRIX(INPUTARGS) Explain usage here
@@ -35,5 +35,7 @@ denominator = sum(arr1(:).^2);
 % Calculate the similarity
 similarity = 1 - (numerator / denominator);
 
+% Invert the similarity to get the distance
+dst = 1/similarity;
 
 end

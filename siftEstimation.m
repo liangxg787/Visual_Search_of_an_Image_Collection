@@ -20,12 +20,12 @@ subSvaingPath='sift';
 
 % Experiment with different levels of RGB quantization
 % Make a list of Q values the range from 1 to 30, strading by 5
-NumOctavesList = 3:1:6;
+NumOctavesList = 3:1:3;
 NumOctavesLen=length(NumOctavesList);
 
 % Experiment with different levels of the size of each grid cell in pixels,e.g 3*3, 4*4, etc
 % Make a list of gridPixelSize values the range from 5 to 50, strading by 5
-NumLevelsList = 3:1:6;
+NumLevelsList = 3:1:3;
 NumLevelsLen=length(NumLevelsList);
 
 tic;

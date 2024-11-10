@@ -13,7 +13,6 @@ function dst = cosineSim(F1, F2)
 % Date: 2024/11/09 17:01:10 
 % Revision: 0.1 
 
-
 dst=cosineSimilarity(F1, F2);
 
 end
