@@ -9,12 +9,12 @@ clear;
 
 % Experiment with different levels of RGB quantization
 % Make a list of Q values the range from 1 to 30, strading by 5
-QLevels = 1:5:21;
+QLevels = 5:5:10;
 QLevelLen=length(QLevels);
 
 % Experiment with different levels of the size of each grid cell in pixels,e.g 3*3, 4*4, etc
 % Make a list of gridPixelSize values the range from 5 to 50, strading by 5
-gridsList = 10:10:50;
+gridsList = 5:5:10;
 gridsLen=length(gridsList);
 
 % featureTypeList = {'colour', 'texture', 'both'};
@@ -25,25 +25,24 @@ featureTypeLen=length(featureTypeList);
 testDataFile=GlobalSetting.filePathInfo.TEST_DATA;
 testData=load(testDataFile, 'testFiles').testFiles;
 % Sample test data
-% testData=testData(1:2,:);
+testData=testData(1:2,:);
 testDataLen=length(testData);
 
-% Define the model type and distance type
-ModelType = 'spacialGrid';
-distanceType = 'euclidean';
 % Set the graphs saving path
-subSvaingPath=ModelType;
+subSvaingPath='spcialGrids';
 
 tic;
 % add progress bar
-% h = waitbar(0, 'Testing data...');
+h = waitbar(0, 'Testing data...');
 
 % Starting parallel pool to accelerate the computing with parfor
 % Test every picture in the test dataset and save it's PR curve.
 % Test all test data
 fprintf("Start testing ...\n");
 % Define the Stuct for all features
-PRValues=struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
+% PRValues=struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
+% Preallocate the cell array to store results
+PRValuesCell = cell(QLevelLen*gridsLen*featureTypeLen, 1);
 
 % Get the feature data under different Q levels
 parfor j = 1:QLevelLen
@@ -62,8 +61,9 @@ parfor j = 1:QLevelLen
 
             fprintf("Testing when %s\n", label);
             fprintf("1. Start computing descriptors ...\n");
-            AllFeatures = computeDescriptors(ModelType,featureType,grids,Q);
+            AllFeatures = spacialGridsDescriptors(featureType,grids,Q);
 
+            PRValues = struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
 
             for i = 1:testDataLen
                 currentImg = testData(i);
@@ -72,7 +72,7 @@ parfor j = 1:QLevelLen
                 fprintf("*** Testing file: %s ...\n", fileName);
 
                 fprintf("2. Start searching for the image ...\n");
-                topImgs=searchFunction(distanceType,fileName,AllFeatures);
+                topImgs=spacialGridsSearch(fileName,AllFeatures);
 
                 % Save the result for top n result, n= GlobalSetting.SHOW
                 saveTopImages(topImgs, subSvaingPath, fileName);
@@ -89,9 +89,17 @@ parfor j = 1:QLevelLen
 
         end
         toc
+        % Store the results in the cell array
+        PRValuesCell{j} = PRValues;
     end
     % Show progress bar
-    % waitbar(j / testDataLen, h, sprintf('Progress: %d%%', round(j/testDataLen*100)));
+    waitbar(j / QLevelLen, h, sprintf('Progress: %d%%', round(j/testDataLen*100)));
+end
+
+% Combine the results from the cell array
+PRValues = [];
+for j = 1:QLevelLen
+    PRValues = [PRValues; PRValuesCell{j}];
 end
 
 % Prepare data for plotting
