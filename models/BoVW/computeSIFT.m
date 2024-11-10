@@ -23,7 +23,7 @@ descr=uint8(512*descr) ;
 keypoints=frames(1:2,:);
 
 % Run the Harris corner detector
-thresh=1000; % top 1000 corners
+thresh=100; % top 1000 corners
 corners = torr_charris_jc(gimg, thresh)';
 
 % Plot positions of the SIFT points and corners

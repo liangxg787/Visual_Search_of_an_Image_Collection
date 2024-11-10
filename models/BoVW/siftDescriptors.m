@@ -1,4 +1,10 @@
-function AllFeatures = siftDescriptors()
+function AllFeatures = siftDescriptors(save_one_file)
+arguments
+  % If save_one_file is 1, save all the
+  % feature data into one file, otherwise save the feature
+  % data by the file names
+  save_one_file=1
+end
 % SIFTDESCRIPTORS Summary of this function goes here
 % 
 % [OUTPUTARGS] = SIFTDESCRIPTORS(INPUTARGS) Explain usage here
