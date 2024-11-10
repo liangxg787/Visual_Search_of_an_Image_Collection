@@ -1,8 +1,10 @@
 close all;
 clear all;
 
-IMAGE1='testimages/wall1.jpg';
-IMAGE2='testimages/wall2.jpg';
+% IMAGE1='testimages/wall1.jpg';
+% IMAGE2='testimages/wall2.jpg';
+IMAGE1 = [GlobalSetting.filePathInfo.SIFT_TEST_IMAGES, '/wall1.jpg'];
+IMAGE2 = [GlobalSetting.filePathInfo.SIFT_TEST_IMAGES, '/wall2.jpg'];
 
 img1=double(imread(IMAGE1))./255;
 img2=double(imread(IMAGE2))./255;
