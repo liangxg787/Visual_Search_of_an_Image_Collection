@@ -28,8 +28,11 @@ testData=load(testDataFile, 'testFiles').testFiles;
 testData=testData(1:2,:);
 testDataLen=length(testData);
 
+% Define the model type and distance type
+ModelType = 'spacialGrid';
+distanceType = 'euclidean';
 % Set the graphs saving path
-subSvaingPath='spcialGrids';
+subSavingPath = ModelType;
 
 tic;
 % add progress bar
@@ -61,7 +64,7 @@ parfor j = 1:QLevelLen
 
             fprintf("Testing when %s\n", label);
             fprintf("1. Start computing descriptors ...\n");
-            AllFeatures = spacialGridsDescriptors(featureType,grids,Q);
+            AllFeatures = computeDescriptors(ModelType,featureType,grids,Q);
 
             PRValues = struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
 
@@ -72,7 +75,7 @@ parfor j = 1:QLevelLen
                 fprintf("*** Testing file: %s ...\n", fileName);
 
                 fprintf("2. Start searching for the image ...\n");
-                topImgs=spacialGridsSearch(fileName,AllFeatures);
+                topImgs=searchFunction(distanceType,fileName,AllFeatures);
 
                 % Save the result for top n result, n= GlobalSetting.SHOW
                 saveTopImages(topImgs, subSvaingPath, fileName);
