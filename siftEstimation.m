@@ -22,7 +22,7 @@ subSavingPath=ModelType;
 
 % Experiment with different levels of RGB quantization
 % Make a list of NumOctaves values the range from 3 to 10, strading by 2
-NumOctavesList = 3:2:11;
+NumOctavesList = 3:1:3;
 NumOctavesLen=length(NumOctavesList);
 
 % Experiment with different levels of the size of each grid cell in pixels,e.g 3*3, 4*4, etc
@@ -84,7 +84,7 @@ parfor j = 1:NumOctavesLen
     % Store the results in the cell array
     PRValuesCell{j} = PRValues;
     % Show progress bar
-    % waitbar(j / testDataLen, h, sprintf('Progress: %d%%', round(j/testDataLen*100)));
+    waitbar(j / NumOctavesLen, h, sprintf('Progress: %d%%', round(j/NumOctavesLen*100)));
 end
 
 % Combine the results from the cell array

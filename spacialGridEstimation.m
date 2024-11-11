@@ -9,12 +9,12 @@ clear;
 
 % Experiment with different levels of RGB quantization
 % Make a list of Q values the range from 1 to 30, strading by 5
-QLevels = 5:5:10;
+QLevels = 1:5:21;
 QLevelLen=length(QLevels);
 
 % Experiment with different levels of the size of each grid cell in pixels,e.g 3*3, 4*4, etc
 % Make a list of gridPixelSize values the range from 5 to 50, strading by 5
-gridsList = 5:5:10;
+gridsList = 10:10:50;
 gridsLen=length(gridsList);
 
 % featureTypeList = {'colour', 'texture', 'both'};
@@ -96,7 +96,7 @@ parfor j = 1:QLevelLen
         PRValuesCell{j} = PRValues;
     end
     % Show progress bar
-    waitbar(j / QLevelLen, h, sprintf('Progress: %d%%', round(j/testDataLen*100)));
+    waitbar(j / QLevelLen, h, sprintf('Progress: %d%%', round(j/QLevelLen*100)));
 end
 
 % Combine the results from the cell array
