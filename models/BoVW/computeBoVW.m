@@ -17,7 +17,7 @@ function FeatData = computeBoVW(FeatData)
 nwordsCodebook = 1000;
 % nfeatCodebook = 75000;
 
-normBofHist = 1;
+normBofHist = 0;
 
 %% 1: quantize pre-computed image features with SIFT
 
@@ -28,7 +28,7 @@ alldata=[];
 for i=1:length(Desc)
     alldata=[alldata Desc{i}];
 end
-% alldata = double(alldata);
+alldata = double(alldata);
 
 NCLUSTERS = 20;
 DIMENSION = 128;
@@ -49,8 +49,9 @@ for i=1:length(FeatData)
     else
 
         % sift = double(sift);
-        siftResized = imresize(sift, size(centres));
-        dmat = euclideanDistance(siftResized,centres);
+        % siftResized = imresize(sift, size(centres));
+        centresResized = imresize(centres, size(sift));
+        dmat = euclideanDistance(siftResized,centresResized);
         [quantdist,visword] = min(dmat,[],2);
         % save feature labels
         FeatData(i).visword = visword;

@@ -67,7 +67,7 @@ set(gca, 'Fontname', 'Times New Roman', 'Fontsize', 10);
 
 % Set the title
 graphNameRe=strrep(graphName,'_','\_');
-titleStr=strjoin(['PR Curve of ', graphNameRe, ' with different Q values']);
+titleStr=strjoin(['PR Curve of ', graphNameRe, ' with different parameters']);
 title(titleStr,'FontSize', 12);
 % Set the labels
 xlabel('\fontname{Times New Roman}\fontsize{12}Recall');
