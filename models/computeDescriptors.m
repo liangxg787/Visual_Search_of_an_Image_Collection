@@ -68,6 +68,11 @@ for filenum=1:allFilesLen
             NumOctaves = varargin{1};
             NumLevels = varargin{2};
             F=computeSIFT(img,NumOctaves,NumLevels);
+        case 'BoVW'
+            % Parse the input arguments: varargin
+            NumOctaves = varargin{1};
+            NumLevels = varargin{2};
+            F=computeSIFT(img,NumOctaves,NumLevels);
         otherwise
             error(['Unknown parameter: ' ModelType]) ;
     end

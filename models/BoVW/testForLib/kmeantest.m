@@ -5,7 +5,7 @@ RANGE=100;
 NCLUSTERS=5;
 SPREAD=5;
 NPOINTS=100;
-DIMENSION=2;    % if you change this from 2, the clustering will work but 
+DIMENSION=128;    % if you change this from 2, the clustering will work but 
                 % the plot will break
 
 % 1) Generate NCLUSTERS of synthetic data

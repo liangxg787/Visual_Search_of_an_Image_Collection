@@ -16,7 +16,8 @@ function descr = computeSIFT(img,NumOctaves,NumLevels)
 gimg=rgb2gray(img);
 
 % Run the SIFT detetor, and compute the SIFT descriptors
-[~,descr,~,~] = sift( gimg, 'Verbosity', 1, 'NumOctaves', NumOctaves, 'NumLevels', NumLevels);
+% [~,descr,~,~] = sift( gimg, 'Verbosity', 1, 'NumOctaves', NumOctaves, 'NumLevels', NumLevels);
+[~,descr,~,~] = sift( gimg, 'Verbosity', 1);
 
 descr=uint8(512*descr) ;
 
