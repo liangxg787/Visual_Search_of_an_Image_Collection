@@ -89,11 +89,11 @@ parfor j = 1:QLevelLen
                 % AllFeaturesLen=length(AllFeatures);
                 % computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,subSavingPath,strQ);
             end
+            % Store the results in the cell array
+            PRValuesCell{j*k*m} = PRValues;
 
         end
         toc
-        % Store the results in the cell array
-        PRValuesCell{j} = PRValues;
     end
     % Show progress bar
     % t_a = j*k*m*i;
@@ -104,7 +104,7 @@ end
 
 % Combine the results from the cell array
 PRValues = [];
-for j = 1:QLevelLen
+for j = 1:QLevelLen*gridsLen*featureTypeLen
     PRValues = [PRValues; PRValuesCell{j}];
 end
 
