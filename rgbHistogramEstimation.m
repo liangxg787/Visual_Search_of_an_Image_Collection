@@ -58,7 +58,9 @@ parfor j = 1:QLevelLen
         topImgs = searchFunction(distanceType, fileName, AllFeatures);
         
         % Save the result for top n result, n= GlobalSetting.SHOW
-        saveTopImages(topImgs, subSavingPath, fileName);
+        subSavingPathImg = {subSavingPath, num2str(Q)};
+        subSavingPathImg = strjoin(subSavingPathImg, '_');
+        saveTopImages(topImgs, subSavingPathImg, fileName);
 
         % Compute PR value
         PRValues(end+1).parameter = label;
@@ -72,6 +74,7 @@ parfor j = 1:QLevelLen
     toc
     % Store the results in the cell array
     PRValuesCell{j} = PRValues;
+    
     % Show progress bar
     % t_a = j*i;
     % t_b = QLevelLen*testDataLen;

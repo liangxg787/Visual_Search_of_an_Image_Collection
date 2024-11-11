@@ -69,7 +69,9 @@ parfor j = 1:NumOctavesLen
             topImgs=searchFunction(distanceType,fileName,AllFeatures);
 
             % Save the result for top n result, n= GlobalSetting.SHOW
-            saveTopImages(topImgs, subSavingPath, fileName);
+            subSavingPathImg = {subSavingPath, num2str(NumOctaves), num2str(NumLevels)};
+            subSavingPathImg = strjoin(subSavingPathImg, '_');
+            saveTopImages(topImgs, subSavingPathImg, fileName);
 
             % Compute PR value
             PRValues(end+1).parameter = label;
@@ -84,6 +86,7 @@ parfor j = 1:NumOctavesLen
     toc
     % Store the results in the cell array
     PRValuesCell{j} = PRValues;
+
     % Show progress bar
     % t_a = j*k*i;
     % t_b = NumOctavesLen*NumLevelsLen*testDataLen;

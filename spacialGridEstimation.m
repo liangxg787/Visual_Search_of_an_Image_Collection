@@ -79,7 +79,9 @@ parfor j = 1:QLevelLen
                 topImgs=searchFunction(distanceType,fileName,AllFeatures);
 
                 % Save the result for top n result, n= GlobalSetting.SHOW
-                saveTopImages(topImgs, subSavingPath, fileName);
+                subSavingPathImg = {subSavingPath, num2str(Q),num2str(grids),featureType};
+                subSavingPathImg = strjoin(subSavingPathImg, '_');
+                saveTopImages(topImgs, subSavingPathImg, fileName);
 
                 % Compute PR value
                 PRValues(end+1).parameter=label;
