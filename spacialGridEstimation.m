@@ -250,9 +250,9 @@ case 'texture'
   toc
 case 'both'
   tic;
-  for j = 1:QLevelLen
+  parfor j = 1:QLevelLen
     Q = QLevels(j);
-    parfor j_ = 1:angularQLen
+    for j_ = 1:angularQLen
         angularQ = angularQs(j_);
         tic;
 
