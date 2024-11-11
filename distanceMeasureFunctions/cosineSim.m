@@ -14,6 +14,6 @@ function dst = cosineSim(F1, F2)
 % Revision: 0.1 
 
 sim=cosineSimilarity(F1, F2);
-dst=1/sim;
+dst=1 - sim;
 
 end

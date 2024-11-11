@@ -53,7 +53,7 @@ for i=1:NIMG
         case 'manhattan'
             thedst=manhattanDistance(foundImgFeat,candidateFeat);
         case 'pearson'
-            thedst=pearsonCorrelationCoefficient(foundImgFeat,candidateFeat);
+            thedst=pearsonDistance(foundImgFeat,candidateFeat);
         case 'Eigen_Mahalanobis'
             foundImgobs= foundImg.obs;
             thedst=Eigen_Mahalanobis(foundImgobs,candidateFeat);

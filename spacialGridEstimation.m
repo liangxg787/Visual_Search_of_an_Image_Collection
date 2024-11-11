@@ -37,8 +37,8 @@ ModelType = 'spacialGrid';
 % distanceType = 'euclidean';
 % distanceType = 'manhattan';
 % distanceType = 'mahalanobis';
-distanceType = 'cosine';
-% distanceType = 'pearson';
+% distanceType = 'cosine';
+distanceType = 'pearson';
 % Set the graphs saving path
 subSavingPath = ModelType;
 
@@ -250,9 +250,9 @@ case 'texture'
   toc
 case 'both'
   tic;
-  parfor j = 1:QLevelLen
+  for j = 1:QLevelLen
     Q = QLevels(j);
-    for j_ = 1:angularQLen
+    parfor j_ = 1:angularQLen
         angularQ = angularQs(j_);
         tic;
 

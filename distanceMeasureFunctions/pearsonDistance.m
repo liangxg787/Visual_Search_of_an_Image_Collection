@@ -1,4 +1,4 @@
-function dst = pearsonCorrelationCoefficient(F1, F2)
+function dst = pearsonDistance(F1, F2)
 % PEARSONCORRELATIONCOEFFICIENT Summary of this function goes here
 % 
 % [OUTPUTARGS] = PEARSONCORRELATIONCOEFFICIENT(INPUTARGS) Explain usage here
@@ -14,7 +14,11 @@ function dst = pearsonCorrelationCoefficient(F1, F2)
 % Revision: 0.1 
 
 % Calculate Pearson Correlation Coefficient
-R = corr(F1, F2);
-dst = 1 - abs(R);
+R = corrcoef(F1, F2);
 
+% Extract Pearson Correlation Coefficient
+pearson_correlation = R(1, 2);
+
+% Calculate Pearson Distance
+dst = 1 - pearson_correlation;
 end
