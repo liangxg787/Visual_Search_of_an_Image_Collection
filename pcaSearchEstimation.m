@@ -29,7 +29,8 @@ tic;
 % Test every picture in the test dataset and save it's PR curve.
 % Test all test data
 fprintf("Start testing ...\n");
-parfor i = 1:testDataLen
+% parfor i = 1:testDataLen
+for i = 1:testDataLen
     currentImg = testData(i);
     fileName = currentImg.name;
     fileName=string(fileName);
