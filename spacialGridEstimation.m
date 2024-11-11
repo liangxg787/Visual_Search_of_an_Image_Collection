@@ -25,7 +25,7 @@ featureTypeLen=length(featureTypeList);
 testDataFile=GlobalSetting.filePathInfo.TEST_DATA;
 testData=load(testDataFile, 'testFiles').testFiles;
 % Sample test data
-testData=testData(1:2,:);
+% testData=testData(1:2,:);
 testDataLen=length(testData);
 
 % Define the model type and distance type
@@ -126,7 +126,7 @@ parameterUnique = unique(parameterData);
 nameUnique = unique(nameData);
 
 % Plot PR Curve
-for i = 1:testDataLen
+parfor i = 1:testDataLen
     fileName = nameUnique{i};
     fileName=string(fileName);
 

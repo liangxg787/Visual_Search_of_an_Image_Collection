@@ -47,7 +47,7 @@ hold off;
 % Set the format of the chart
 % Set the legend
 % Replace the special symbols in the legendNames
-legendName = legend(h,legendNames,'Location', 'best');
+legendName = legend(h,legendNames,'Location', 'northeast');
 legendName.ItemTokenSize = [30 30];
 set(legendName,'Box','off');
 

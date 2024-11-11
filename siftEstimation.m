@@ -112,7 +112,7 @@ parameterUnique = unique(parameterData);
 nameUnique = unique(nameData);
 
 % Plot PR Curve
-for i = 1:testDataLen
+parfor i = 1:testDataLen
     fileName = nameUnique{i};
     fileName=string(fileName);
 

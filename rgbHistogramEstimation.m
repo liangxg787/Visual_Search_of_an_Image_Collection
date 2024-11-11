@@ -9,7 +9,8 @@ clear;
 
 % Experiment with different levels of RGB quantization
 % Make a list of Q values the range from 1 to 8, strading by 2
-QLevels = 1:5:21;
+% QLevels = 1:5:21;
+QLevels = 20:5:50;
 QLevelLen = length(QLevels);
 
 % Load test data
@@ -100,7 +101,7 @@ parameterUnique = unique(parameterData);
 nameUnique = unique(nameData);
 
 % Plot PR Curve
-for i = 1:testDataLen
+parfor i = 1:testDataLen
     fileName = nameUnique{i};
     fileName = string(fileName);
 
