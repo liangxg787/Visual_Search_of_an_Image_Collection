@@ -45,12 +45,15 @@ fprintf("Start testing ...\n");
 % Define the Stuct for all features
 % PRValues=struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
 % Preallocate the cell array to store results
-PRValuesCell = cell(QLevelLen*gridsLen*featureTypeLen, 1);
+PRValuesCell = cell(QLevelLen, 1);
 
 % Get the feature data under different Q levels
 parfor j = 1:QLevelLen
     Q = QLevels(j);
     tic;
+
+    PRValues = struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
+
     % Get the feature data under different gridPixelSize
     for k = 1:gridsLen
         grids = gridsList(k);
@@ -65,8 +68,6 @@ parfor j = 1:QLevelLen
             fprintf("Testing when %s\n", label);
             fprintf("1. Start computing descriptors ...\n");
             AllFeatures = computeDescriptors(ModelType,featureType,grids,Q);
-
-            PRValues = struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
 
             for i = 1:testDataLen
                 currentImg = testData(i);
@@ -89,11 +90,10 @@ parfor j = 1:QLevelLen
                 % AllFeaturesLen=length(AllFeatures);
                 % computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,subSavingPath,strQ);
             end
-            % Store the results in the cell array
-            PRValuesCell{j*k*m} = PRValues;
-
         end
         toc
+        % Store the results in the cell array
+        PRValuesCell{j} = PRValues;
     end
     % Show progress bar
     % t_a = j*k*m*i;
@@ -104,7 +104,7 @@ end
 
 % Combine the results from the cell array
 PRValues = [];
-for j = 1:QLevelLen*gridsLen*featureTypeLen
+for j = 1:QLevelLen
     PRValues = [PRValues; PRValuesCell{j}];
 end
 

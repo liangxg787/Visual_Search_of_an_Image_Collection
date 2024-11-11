@@ -40,12 +40,15 @@ tic;
 fprintf("Start testing ...\n");
 
 % Preallocate the cell array to store results
-PRValuesCell = cell(NumOctavesLen * NumLevelsLen, 1);
+PRValuesCell = cell(NumOctavesLen, 1);
 
 % Get the feature data under different NumOctaves
 parfor j = 1:NumOctavesLen
     NumOctaves = NumOctavesList(j);
     tic;
+
+    PRValues = struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
+
     % Get the feature data under different NumLevels
     for k = 1:NumLevelsLen
         NumLevels = NumLevelsList(k);
@@ -55,8 +58,6 @@ parfor j = 1:NumOctavesLen
         fprintf("Testing when %s\n", label);
         fprintf("1. Start computing descriptors ...\n");
         AllFeatures = computeDescriptors(ModelType,NumOctaves,NumLevels);
-
-        PRValues = struct('parameter', {}, 'name', {}, 'P', {}, 'R', {});
 
         for i = 1:testDataLen
             currentImg = testData(i);
@@ -79,10 +80,10 @@ parfor j = 1:NumOctavesLen
             % AllFeaturesLen = length(AllFeatures);
             % computeConfusionMatrix(topImgs, fileName, AllFeaturesLen, subSavingPath, strQ);
         end
-        % Store the results in the cell array
-        PRValuesCell{j*k} = PRValues;
     end
     toc
+    % Store the results in the cell array
+    PRValuesCell{j} = PRValues;
     % Show progress bar
     % t_a = j*k*i;
     % t_b = NumOctavesLen*NumLevelsLen*testDataLen;
@@ -91,7 +92,7 @@ end
 
 % Combine the results from the cell array
 PRValues = [];
-for j = 1:NumOctavesLen * NumLevelsLen
+for j = 1:NumOctavesLen
     PRValues = [PRValues; PRValuesCell{j}];
 end
 
