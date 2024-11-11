@@ -92,9 +92,12 @@ parfor j = 1:QLevelLen
             end
         end
         toc
-        % Store the results in the cell array
-        PRValuesCell{j} = PRValues;
+        
     end
+
+    % Store the results in the cell array
+    PRValuesCell{j} = PRValues;
+    
     % Show progress bar
     % t_a = j*k*m*i;
     % t_b = QLevelLen*gridsLen*featureTypeLen*testDataLen;
