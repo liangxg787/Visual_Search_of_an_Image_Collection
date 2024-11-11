@@ -256,7 +256,7 @@ case 'both'
         for k = 1:gridsLen
             grids = gridsList(k);
 
-            label=strcat("Q:", num2str(Q), "angularQ:", num2str(angularQ), ', grids:', num2str(grids), ', featureType:', featureType);
+            label=strcat("Q:", num2str(Q), ", angularQ:", num2str(angularQ), ', grids:', num2str(grids), ', featureType:', featureType);
 
             fprintf("Testing when %s\n", label);
             fprintf("1. Start computing descriptors ...\n");
