@@ -47,7 +47,7 @@ for i=1:NIMG
         case 'euclideanMatrix'
             thedst=euclideanDistanceForMatrix(foundImgFeat,candidateFeat);
         case 'cosine'
-            thedst=cosineDistance(foundImgFeat,candidateFeat);
+            thedst=cosineSim(foundImgFeat,candidateFeat);
         case 'mahalanobis'
             thedst=mahalanobisDistance(foundImgFeat,candidateFeat);
         case 'manhattan'

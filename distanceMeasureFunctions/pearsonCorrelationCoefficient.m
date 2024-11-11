@@ -14,7 +14,7 @@ function dst = pearsonCorrelationCoefficient(F1, F2)
 % Revision: 0.1 
 
 % Calculate Pearson Correlation Coefficient
-R = corrcoef(F1, F2);
-dst = R;
+R = corr(F1, F2);
+dst = 1 - abs(R);
 
 end
