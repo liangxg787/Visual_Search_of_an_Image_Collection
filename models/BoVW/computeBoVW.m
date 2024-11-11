@@ -15,5 +15,8 @@ function [outputArgs] = computeBoVW(inputArgs)
 
 
 
+fprintf('Running KMeans over %d points (of dimension %d)\n',size(alldata,2),DIMENSION);
+startingcentres=rand(NCLUSTERS,DIMENSION);
+centres=Kmeans(startingcentres,alldata',zeros(1,14));
 
 end

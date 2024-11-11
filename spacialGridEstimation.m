@@ -34,10 +34,10 @@ testDataLen=length(testData);
 
 % Define the model type and distance type
 ModelType = 'spacialGrid';
-% distanceType = 'euclidean';
+distanceType = 'euclidean';
 % distanceType = 'manhattan';
 % distanceType = 'cosine';
-distanceType = 'pearson';
+% distanceType = 'pearson';
 % Set the graphs saving path
 subSavingPath = ModelType;
 
