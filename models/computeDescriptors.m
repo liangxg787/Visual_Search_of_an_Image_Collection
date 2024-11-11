@@ -53,7 +53,8 @@ for filenum=1:allFilesLen
             featureType = varargin{1};
             grids = varargin{2};
             Q = varargin{3};
-            F=computeSpacialGrid(img,featureType,grids,Q);
+            angularQ = varargin{4};
+            F=computeSpacialGrid(img,featureType,grids,Q, angularQ);
         case 'PCA'
             obs=[reshape(img(:,:,1),1,[]); reshape(img(:,:,2),1,[]); reshape(img(:,:,3),1,[])];
             method='keepf';
