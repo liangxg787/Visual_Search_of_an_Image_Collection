@@ -73,7 +73,9 @@ parfor j = 1:QLevelLen
     % Store the results in the cell array
     PRValuesCell{j} = PRValues;
     % Show progress bar
-    % waitbar(j / testDataLen, h, sprintf('Progress: %d%%', round(j/testDataLen*100)));
+    % t_a = j*i;
+    % t_b = QLevelLen*testDataLen;
+    % waitbar(t_a / t_b, h, sprintf('Progress: %d%%', round(t_a/t_b*100)));
 end
 
 % Combine the results from the cell array

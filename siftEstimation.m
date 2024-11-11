@@ -32,7 +32,7 @@ NumLevelsLen=length(NumLevelsList);
 
 tic;
 % add progress bar
-h = waitbar(0, 'Testing data...');
+% h = waitbar(0, 'Testing data...');
 
 % Starting parallel pool to accelerate the computing with parfor
 % Test every picture in the test dataset and save it's PR curve.
@@ -84,7 +84,9 @@ parfor j = 1:NumOctavesLen
     % Store the results in the cell array
     PRValuesCell{j} = PRValues;
     % Show progress bar
-    waitbar(j / NumOctavesLen, h, sprintf('Progress: %d%%', round(j/NumOctavesLen*100)));
+    % t_a = j*k*i;
+    % t_b = NumOctavesLen*NumLevelsLen*testDataLen;
+    % waitbar(t_a / t_b, h, sprintf('Progress: %d%%', round(t_a/t_b*100)));
 end
 
 % Combine the results from the cell array

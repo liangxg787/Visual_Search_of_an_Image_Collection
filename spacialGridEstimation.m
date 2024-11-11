@@ -36,7 +36,7 @@ subSavingPath = ModelType;
 
 tic;
 % add progress bar
-h = waitbar(0, 'Testing data...');
+% h = waitbar(0, 'Testing data...');
 
 % Starting parallel pool to accelerate the computing with parfor
 % Test every picture in the test dataset and save it's PR curve.
@@ -96,7 +96,10 @@ parfor j = 1:QLevelLen
         PRValuesCell{j} = PRValues;
     end
     % Show progress bar
-    waitbar(j / QLevelLen, h, sprintf('Progress: %d%%', round(j/QLevelLen*100)));
+    % t_a = j*k*m*i;
+    % t_b = QLevelLen*gridsLen*featureTypeLen*testDataLen;
+    % waitbar(t_a / t_b, h, sprintf('Progress: %d%%', round(t_a/t_b*100)));
+
 end
 
 % Combine the results from the cell array
