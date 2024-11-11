@@ -48,10 +48,10 @@ for i=1:length(FeatData)
         FeatData(i).quantdist = 0;
     else
 
-        % sift = double(sift);
+        sift = double(sift);
         % siftResized = imresize(sift, size(centres));
         centresResized = imresize(centres, size(sift));
-        dmat = euclideanDistance(siftResized,centresResized);
+        dmat = euclideanDistance(sift,centresResized);
         [quantdist,visword] = min(dmat,[],2);
         % save feature labels
         FeatData(i).visword = visword;
