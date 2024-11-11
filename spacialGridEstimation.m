@@ -49,7 +49,7 @@ fprintf("Start testing ...\n");
 featureTypeList = {'colour', 'texture', 'both'};
 % featureTypeList = {'texture','both'};
 % featureTypeLen=length(featureTypeList);
-featureType=featureTypeList{1};
+featureType=featureTypeList{2};
 
 switch featureType
 case 'colour'
