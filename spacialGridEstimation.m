@@ -8,18 +8,20 @@ close all;
 clear;
 
 % Experiment with different levels of RGB quantization
-% Make a list of Q values the range from 1 to 30, strading by 5
-% QLevels = 1:5:21;
-QLevels = 8:8:24;
+% Make a list of Q values the range from 8 to 24, strading by 8
+% QLevels = 8:8:24;
+QLevels = 24:1:24;
 QLevelLen=length(QLevels);
 
 % The number of levels of angular quantization for the histogram.
-angularQs = 8:8:16;
+% angularQs = 8:8:16;
+angularQs = 16:1:16;
 angularQLen=length(angularQs);
 
 % Experiment with different levels of the size of each grid cell in pixels,e.g 3*3, 4*4, etc
 % Make a list of gridPixelSize values the range from 5 to 50, strading by 5
-gridsList = 4:4:8;
+% gridsList = 4:4:8;
+gridsList = 4:1:4;
 gridsLen=length(gridsList);
 % grids = 8;
 
@@ -32,7 +34,8 @@ testDataLen=length(testData);
 
 % Define the model type and distance type
 ModelType = 'spacialGrid';
-distanceType = 'euclidean';
+% distanceType = 'euclidean';
+distanceType = 'manhattan';
 % Set the graphs saving path
 subSavingPath = ModelType;
 
