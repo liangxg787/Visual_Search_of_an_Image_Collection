@@ -28,6 +28,7 @@ NumOctavesLen=length(NumOctavesList);
 % Experiment with different levels of the size of each grid cell in pixels,e.g 3*3, 4*4, etc
 % Make a list of NumLevels values the range from 5 to 50, strading by 5
 NumLevelsList = 5:1:5;
+% NumLevelsList = 5:5:25;
 NumLevelsLen=length(NumLevelsList);
 
 tic;

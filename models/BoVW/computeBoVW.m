@@ -14,8 +14,8 @@ function FeatData = computeBoVW(FeatData)
 % Revision: 0.1
 
 % number of codewords (i.e. K for the k-means algorithm)
-nwordsCodebook = 500;
-nfeatCodebook = 75000;
+nwordsCodebook = 1000;
+% nfeatCodebook = 75000;
 
 normBofHist = 1;
 
@@ -28,7 +28,7 @@ alldata=[];
 for i=1:length(Desc)
     alldata=[alldata Desc{i}];
 end
-alldata = double(alldata);
+% alldata = double(alldata);
 
 NCLUSTERS = 20;
 DIMENSION = 128;
@@ -48,7 +48,7 @@ for i=1:length(FeatData)
         FeatData(i).quantdist = 0;
     else
 
-        sift = double(sift);
+        % sift = double(sift);
         siftResized = imresize(sift, size(centres));
         dmat = euclideanDistance(siftResized,centres);
         [quantdist,visword] = min(dmat,[],2);
