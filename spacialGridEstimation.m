@@ -78,7 +78,7 @@ parfor j = 1:QLevelLen
                 topImgs=searchFunction(distanceType,fileName,AllFeatures);
 
                 % Save the result for top n result, n= GlobalSetting.SHOW
-                saveTopImages(topImgs, subSvaingPath, fileName);
+                saveTopImages(topImgs, subSavingPath, fileName);
 
                 % Compute PR value
                 PRValues(end+1).parameter=label;
@@ -87,7 +87,7 @@ parfor j = 1:QLevelLen
                 % Plot confusion matrix
                 % fprintf("Finally, plot confusion matrix...\n")
                 % AllFeaturesLen=length(AllFeatures);
-                % computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,subSvaingPath,strQ);
+                % computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,subSavingPath,strQ);
             end
 
         end
@@ -133,7 +133,7 @@ for i = 1:testDataLen
     reacalls=cell2mat(reacalls);
 
     fprintf("Finally, plot the PR curve...\n")
-    plotPrCurve(precisions, reacalls, legendNames, fileName, subSvaingPath);
+    plotPrCurve(precisions, reacalls, legendNames, fileName, subSavingPath);
 end
 
 toc

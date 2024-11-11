@@ -19,7 +19,7 @@ testDataLen=length(testData);
 ModelType = 'PCA';
 distanceType = 'Eigen_Mahalanobis';
 % Set the graphs saving path
-subSvaingPath=ModelType;
+subSavingPath=ModelType;
 
 tic;
 % add progress bar
@@ -44,7 +44,7 @@ parfor i = 1:testDataLen
     topImgs=searchFunction(distanceType,fileName,AllFeatures);
 
     % Save the result for top n result, n= GlobalSetting.SHOW
-    saveTopImages(topImgs, subSvaingPath, fileName);
+    saveTopImages(topImgs, subSavingPath, fileName);
 
     % Compute PR value
     PRValues = computePrValue(topImgs, PRValues,fileName);
@@ -52,7 +52,7 @@ parfor i = 1:testDataLen
     % Plot confusion matrix
     % fprintf("Finally, plot confusion matrix...\n")
     % AllFeaturesLen=length(AllFeatures);
-    % computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,subSvaingPath);
+    % computeConfusionMatrix(topImgs,fileName,AllFeaturesLen,subSavingPath);
 
     % Store PR data
     precisionData={PRValues.P};
@@ -63,7 +63,7 @@ parfor i = 1:testDataLen
     % Plot PR Curve
     fprintf("Finally, plot the PR curve...\n")
     legendNames=strrep(fileName, '_', '\_');
-    plotPrCurve(precisionData, reacallData, legendNames, fileName, subSvaingPath);
+    plotPrCurve(precisionData, reacallData, legendNames, fileName, subSavingPath);
 
 
     % Show progress bar

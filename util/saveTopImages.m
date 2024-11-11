@@ -1,4 +1,4 @@
-function saveTopImages(topImgs, subSvaingPath, fileName)
+function saveTopImages(topImgs, subSavingPath, fileName)
 % SAVETOPIMAGES Summary of this function goes here
 % 
 % [OUTPUTARGS] = SAVETOPIMAGES(INPUTARGS) Explain usage here
@@ -30,7 +30,7 @@ end
 % imgshow(outdisplay);
 
 % Save the graph as a high-resolution PNG file
-saveDir = [GlobalSetting.filePathInfo.SEARCH_RESULTS, '/', subSvaingPath];
+saveDir = [GlobalSetting.filePathInfo.SEARCH_RESULTS, '/', subSavingPath];
 if ~exist(saveDir, 'dir')
     % Create the new directory
     mkdir(saveDir);

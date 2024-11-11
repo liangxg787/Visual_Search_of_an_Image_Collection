@@ -1,4 +1,4 @@
-function plotPrCurve(precisionData, reacallData, legendNames, graphName, subSvaingPath)
+function plotPrCurve(precisionData, reacallData, legendNames, graphName, subSavingPath)
 % PLOT_PR_CURVE Summary of this function goes here
 % precisionData: Array data for the precision data of N experiments
 % reacallData: Array data for the recall data of N experiments
@@ -90,7 +90,7 @@ set(gca,'LooseInset',get(gca,'TightInset'));
 box off;
 
 % Save the graph as a high-resolution PNG file
-saveDir=[GlobalSetting.filePathInfo.PR_GRAPH_PATH, '/', subSvaingPath];
+saveDir=[GlobalSetting.filePathInfo.PR_GRAPH_PATH, '/', subSavingPath];
 if ~exist(saveDir, 'dir')
     % Create the new directory
     mkdir(saveDir);

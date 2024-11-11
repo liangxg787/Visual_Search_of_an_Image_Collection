@@ -1,9 +1,9 @@
-function computeConfusionMatrix(topImgs,queryImgName,dataLen,subSvaingPath,strQ)
+function computeConfusionMatrix(topImgs,queryImgName,dataLen,subSavingPath,strQ)
 arguments
     topImgs
     queryImgName
     dataLen
-    subSvaingPath
+    subSavingPath
     strQ=''
 end
 % COMPUTECONFUSIONMATRIX Summary of this function goes here
@@ -84,7 +84,7 @@ fig_Position(3) = fig_Position(3)*1.5;
 fig.Position = fig_Position;
 
 % Save the graph as a high-resolution PNG file
-saveDir = [GlobalSetting.filePathInfo.CM_GRAPH_PATH, '/', subSvaingPath];
+saveDir = [GlobalSetting.filePathInfo.CM_GRAPH_PATH, '/', subSavingPath];
 if ~exist(saveDir, 'dir')
     % Create the new directory
     mkdir(saveDir);

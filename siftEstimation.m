@@ -18,7 +18,7 @@ testDataLen=length(testData);
 ModelType = 'SIFT';
 distanceType = 'euclideanMatrix';
 % Set the graphs saving path
-subSvaingPath=ModelType;
+subSavingPath=ModelType;
 
 % Experiment with different levels of RGB quantization
 % Make a list of NumOctaves values the range from 3 to 10, strading by 2
@@ -68,7 +68,7 @@ parfor j = 1:NumOctavesLen
             topImgs=searchFunction(distanceType,fileName,AllFeatures);
 
             % Save the result for top n result, n= GlobalSetting.SHOW
-            saveTopImages(topImgs, subSvaingPath, fileName);
+            saveTopImages(topImgs, subSavingPath, fileName);
 
             % Compute PR value
             PRValues(end+1).parameter = label;
@@ -121,7 +121,7 @@ for i = 1:testDataLen
     reacalls=cell2mat(reacalls);
 
     fprintf("Finally, plot the PR curve...\n")
-    plotPrCurve(precisions, reacalls, legendNames, fileName, subSvaingPath);
+    plotPrCurve(precisions, reacalls, legendNames, fileName, subSavingPath);
 end
 
 toc
