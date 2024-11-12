@@ -30,7 +30,7 @@ for i=1:length(Desc)
 end
 alldata = double(alldata);
 
-NCLUSTERS = 20;
+NCLUSTERS = 591;
 DIMENSION = 128;
 
 fprintf('Running KMeans over %d points (of dimension %d)\n',size(alldata,2),DIMENSION);

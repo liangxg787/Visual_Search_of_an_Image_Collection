@@ -10,7 +10,7 @@ clear;
 
 % Define the output file path for feature data
 OUT_FOLDER=GlobalSetting.filePathInfo.DESCRIPTOR_FOLDER;
-allFeatFile=[OUT_FOLDER,'/AllFeaturesSIFT.mat'];
+allFeatFile=[OUT_FOLDER,'/AllFeaturesBoVW.mat'];
 
 FeatData=load(allFeatFile);
 FeatData = FeatData.AllFeatures;
