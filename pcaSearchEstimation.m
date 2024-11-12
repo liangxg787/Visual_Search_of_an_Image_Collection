@@ -29,7 +29,10 @@ tic;
 % Test every picture in the test dataset and save it's PR curve.
 % Test all test data
 fprintf("Start testing ...\n");
-% parfor i = 1:testDataLen
+fprintf("1. Start computing descriptors ...\n");
+AllFeatures=computeDescriptors(ModelType);
+
+% for i = 1:testDataLen
 parfor i = 1:testDataLen
     currentImg = testData(i);
     fileName = currentImg.name;
@@ -37,9 +40,6 @@ parfor i = 1:testDataLen
     fprintf("*** Testing file: %s ...\n", fileName);
     % Define the Stuct for all features
     PRValues=struct('name', {}, 'P', {}, 'R', {});
-
-    fprintf("1. Start computing descriptors ...\n");
-    AllFeatures=computeDescriptors(ModelType);
 
     fprintf("2. Start searching for the image ...\n");
     topImgs=searchFunction(distanceType,fileName,AllFeatures);
