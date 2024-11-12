@@ -163,7 +163,7 @@ In the Search Module, the query image is obtained from testFiles, and its corres
 
 Finally, the top 10 results are selected and the top 10 images most similar to the query image are output. Based on the search results, precision and recall are calculated, and Precision-Recall curve (PR curve) are plotted. The evaluation method for PR curve will be discussed in detail in \textit{Section 2.1}.
 
-From an engineering perspective, to facilitate model tuning and experimentation, this project improves code performance by optimizing the code structure and using multiprocessing. The code structure tree is shown in Figure 1, and the dependency structure is shown in Figure 2.
+From an engineering perspective, to facilitate model tuning and experimentation, this project improves code performance by optimizing the code structure and using multiprocessing.
 
 Due to space limitations, this report presents and analyzes the experimental results of only three selected query images. These images (Figure \ref{fig:images}) were chosen to represent categories with varying performance levels — high, medium, and low—across all experiments, allowing for a comprehensive evaluation of the system’s effectiveness. This Three Degrees Score method will be disscussed in detail in \textit{Section 2.1}.
 
@@ -579,7 +579,7 @@ As shown in the Figure \ref{fig:cosine}, Figure \ref{fig:euclidean},  Figure \re
 
 SVM is a popular supervised machine learning algorithm primarily used for classification and regression tasks. It is known for its efficiency in high-dimensional spaces and is widely applied to binary classification problems. The core principle of SVM is to find an optimal decision boundary (hyperplane) that separates samples from different classes, maximizing classification accuracy.
 
-In this project, we initially attempted to implement SVM using the SVM model provided in the cvprlab model library of the EEE3032 module, but it failed to run successfully. Subsequently, we utilized the Classification Learner Toolbox in Matlab to classify all image data based on the previously obtained descriptors. Based on conclusions from earlier experiments, we used descriptors calculated from the Spatial Grid with color and texture features, which demonstrated relatively better performance and effectiveness, as training data. The SVM model used was the **Fine Gaussian SVM**. Due to hardware limitations, PCA was applied to reduce the dimensionality of the descriptors, ensuring the training process could proceed smoothly.
+In this project, we initially attempted to implement SVM using the SVM model provided in the cvprlab model library of the EEE3032 module \citep{EEE3032}, but it failed to run successfully. Subsequently, we utilized the Classification Learner Toolbox\citep{MATLAB} in Matlab to classify all image data based on the previously obtained descriptors. Based on conclusions from earlier experiments, we used descriptors calculated from the Spatial Grid with color and texture features, which demonstrated relatively better performance and effectiveness, as training data. The SVM model used was the **Fine Gaussian SVM**. Due to hardware limitations, PCA was applied to reduce the dimensionality of the descriptors, ensuring the training process could proceed smoothly.
 
 The distribution of dataset is shown in Figure \ref{fig:distribution}.The results of the classification experiment using Fine Gaussian SVM are shown in the Figure \ref{fig:confusion}:
 
