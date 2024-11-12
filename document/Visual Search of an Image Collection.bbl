@@ -1,3 +1,8 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{ComputerVision}
+Richard Szeliski.
+\newblock {\em Computer Vision: Algorithms and Applications}.
+\newblock Springer-Verlag, Berlin, Heidelberg, 1st edition, 2010.
 
 \end{thebibliography}

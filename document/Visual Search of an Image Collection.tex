@@ -98,7 +98,7 @@ This project aims to explore different algorithms for visual searching of an ima
 
 Compared to traditional text-based image search, visual appearance-based search is more effective at describing the visual characteristics of an image, while text is only suitable for describing the objects present in the image. This report explores various visual search algorithms using the MSRC-v2 image database, including Global Colour Histogram, Spatial Grid, PCA, and SIFT. Additionally, this project investigates the classification task on the current image dataset using BoVW (Bag of Visual Words) and SVM based on the computed descriptors. Figure 1 shows the project architecture.
 
-Figure 1 shows the project architecture. The implementation details are structured as follows: \textit{Section 2} covers the implementation of visual search techniques. \textit{Section 3} delves into experiments using various descriptors and distance measures. In \textit{Section 4}, the report outlines the implementation of a basic BoVW system. \textit{Section 5} focuses on classifying the categories within the image collection. Finally, conclusions are drawn in \textit{Section 6}. The entire project was implemented using Matlab.
+This report is structured as follows: \textit{Section 2} covers the implementation of visual search techniques. \textit{Section 3} delves into experiments using various descriptors and distance measures. In \textit{Section 4}, the report outlines the implementation of a basic BoVW system. \textit{Section 5} focuses on classifying the categories within the image collection. Finally, conclusions are drawn in \textit{Section 6}. The entire project was implemented using Matlab.
 
 % \begin{figure}[ht]
 % \begin{center}
@@ -119,32 +119,105 @@ Figure 1 shows the project architecture. The implementation details are structur
 
 \section{Implementation of Visual search techniques}
 
+Figure 1 shows the project architecture.  First, the raw images in the MSRC-v2 image database are preprocessed, which includes splitting the test set and parsing the category labels. The test set is stored in the testFiles using a struct data structure, while the category labels are stored in classData using a map data structure. The mapping between category labels and the categories in the MSRC-v2 image database is shown in Table 1. Next, we explore using different models to build various descriptors, and all descriptor data is stored in a struct data structure, forming the All Features database. The methods for constructing descriptors using different models will be discussed in detail in Section 2.2.
+
+In the Search Module, the query image is obtained from testFiles, and its corresponding feature descriptors are retrieved from the All Features database using the query image’s name. Then, the feature descriptors of this image are compared with those of all the images in the All Features database. Distance measures are used to calculate the distances, and the resulting data is sorted in ascending order to obtain the search results.
+
+Finally, the top 10 results are selected and the top 10 images most similar to the query image are output. Based on the search results, precision and recall are calculated, and Precision-Recall curves (PR curves) are plotted. The evaluation method for PR curves will be discussed in detail in Section 2.2.
+
+From an engineering perspective, to facilitate model tuning and experimentation, this project improves code performance by optimizing the code structure and using multiprocessing. The code structure tree is shown in Figure 1, and the dependency structure is shown in Figure 2.
+
+Due to space limitations, this report only selects the experimental results of the following three query images for presentation and analysis. The categories represented by these three query images correspond to high, medium, and low performance in all the experiments, respectively.
+
+\subsection{Evaluation methodology}
+
+This project primarily uses precision and recall to evaluate the results of visual search. Precision indicates the proportion of true positive samples among those predicted as positive. Recall represents the proportion of true positive samples that were correctly predicted. Their calculation methods are as follows:
+
+
+
+The PR curve is a graph plotted based on precision and recall, and it is an important tool for evaluating the performance of a classification model. It helps us compare the model’s performance at different thresholds and select the optimal threshold for prediction.
+
 \subsection{Algorithms for computing descriptors}
 
-
+Due to time and hardware limitations, the parameter tuning for each model was restricted to a relatively small range during the exploration process.
 
 \subsubsection{Global colour histogram}
 
+Model Principles
 
+The color histogram remains relatively consistent under translation and rotation along the viewing axis, and it changes gradually with variations in the angle of view\citep{ComputerVision}. The continuous color space is quantized into a finite number of discrete bins. This is controlled by a parameter Q , which determines the number of bins per channel. In practice, we can create a single integer value for each pixel that summarises the RGB value. We will use this as the bin index in the histogram, according to the equation.
+
+
+
+The color histogram is relatively stable under translation and rotation around the viewing axis, and it only changes gradually with variations in the viewing angle. To construct the histogram, the continuous color space is quantized into a finite set of discrete bins, determined by a parameter , which specifies the number of bins per color channel. In practice, each pixel’s RGB value can be encoded into a single integer, which serves as an index for its corresponding bin in the histogram. This encoding allows efficient mapping of pixel colors to their respective histogram bins based on this quantization equation: 
+
+
+
+Model Experiments
+
+Parameter tuning
+Q represents the level of quantization of the RGB color space and is the most critical parameter for the global color histogram model. In this experiment,  Q is varied over a range from 1 to 50 to analyze its impact on performance.
+Results analysis
+best parameter
+best class   class 10, flower
 
 \subsubsection{Spatial grid}
 
+The Global Color Histogram focuses solely on the color distribution of the image but ignores the spatial information of the pixels. The spatial information of the image can be extracted by implementing a grid-based method, which helps to address the limitation of the Global Color Histogram. Specifically, we can divide the image into grids. Then, a color histogram is calculated within each grid. By merging the descriptors from all grids, we obtain the final descriptor. Furthermore, we can also compute the texture histogram within each grid to obtain the final descriptor.
 
+This project conducts experiments on three models: Spatial Grid with color feature, Spatial Grid with texture feature, and Spatial Grid with both color and texture teatures
+
+
+
+Model Experiments
+
+Parameter tuning
+Spatial grid with color feature,  Q, 8 - 24,  grids, 4-8
+Spatial grid with texture feature, angularQ, 8, 16, grids, 4-8     angularQ is  the number of levels of angular quantization for the histogram
+Spatial grid with color feature and texture feature,  Q, 8 - 24,  angularQ, 8, 16, grids, 4-8
+
+Results analysis
+best parameter
+best class
 
 \subsubsection{PCA}
+
+Principal Component Analysis (PCA) is a widely used technique for dimensionality reduction, lossy data compression, feature extraction, and data visualization (Jolliffe, 2002).  PCA can be defined in two ways: firstly, it is an orthogonal projection of data onto a lower-dimensional linear space, known as the principal subspace, such that the variance of the projected data 3  is maximized (Hotelling, 1933); secondly, it is a linear projection method that aims to minimize the average projection cost, i.e., the mean squared distance between data points and their projections (Pearson, 1901). In this project, we directly use the PCA model provided in the cvprlab model library of the EEE3032 module. The core method is to use the eig function to solve the Eigen decomposition of the covariance matrix.
+
+
+Model Experiments
+
+Parameter tuning
+In this project, no parameter tuning has been performed for the PCA model.
+
+Results analysis
+best parameter
+best class
 
 
 
 \subsubsection{SIFT}
 
+Scale-invariant feature transform (SIFT) is a computer vision algorithm designed to detect and describe local features in images. It operates by identifying keypoints at various scales and computing their scale, rotation, and location information, providing a rich representation of the image. SIFT features are constructed by computing the gradient of each pixel within a 16x16 window around the detected keypoint and using the corresponding level of the Gaussian pyramid at which the keypoint was detected. The gradient magnitudes are weighted by a Gaussian function to reduce the influence of gradients far from the center, as these gradients are more susceptible to small misalignments.
+
+Model Experiments
+
+Parameter adjustment
+NumOctaves, fixed 3 
+NumLevels, range from 5 to 25
+
+Results analysis
+best parameter
+best class
 
 
-\subsection{Evaluation methodology}
 
 
 
 
-\section{Experiments}
+\section{Experiments for different descriptors and distance measures}
+
+This experiment focuses on a comparative evaluation of the results using different descriptors and different distance measures. The descriptor models used in the experiment include the Global Color Histogram and Spatial Grid. The distance measures used include Euclidean Distance, Manhattan Distance, Cosine Similarity, and the Pearson Distance.
 
 \subsection{Experimental design}
 
@@ -153,12 +226,36 @@ This experiment uses the variable-controlling approach to examine the impact of 
 
 \subsection{Different descriptors}
 
+Experimental Conditions
+
+The same distance calculation method, Euclidean Distance, was used; different descriptor models were employed: Global Color Histogram and Spatial Grid with both color and texture features.
+
+Analysis of Experimental Results
+
 
 \subsection{Different distance measures}
 
+Experimental Conditions
 
+The same descriptor model, Spatial Grid with both color and texture features, was used; different distance calculation methods were employed: Euclidean Distance, Manhattan Distance, Cosine Similarity, and Pearson Distance.
+
+Analysis of Experimental Results
 
 \section{BoVW}
+
+BoVW model is a method used for image retrieval, inspired by the “bag of words” concept originally used in text retrieval. The “bag of words” approach treats a text document as a collection of individual words, disregarding grammar, syntax, and context. By building a dictionary and counting the frequency of each word, it allows for the classification of text content. Similarly, BoVW applies this idea to image retrieval.
+
+
+
+Implementation of BoVW in This Project:
+
+Feature Extraction: Using the SIFT algorithm mentioned earlier, feature vectors are extracted from images across different categories. The descriptors for each image form a matrix.
+
+​Building the Codebook: All feature vectors are combined into a single matrix. The K-Means algorithm is then used to cluster the feature vectors, grouping similar visual words together to construct a codebook with visual words. In this project, the K-Means algorithm provided by the cvprlab model library in the EEE3032 module is used.
+
+​Histogram Construction: For each image, the frequency of each visual word from the codebook is counted using the histc function, creating a histogram representing the occurrence of each visual word. The image is then represented as a -dimensional numerical vector, which is stored in a descriptors feature database for later retrieval.
+
+Image Search: During the search process, distance measures are used to find the top results with the smallest distances to the query image.
 
 
 \section{Classify with SVM}
@@ -166,6 +263,7 @@ This experiment uses the variable-controlling approach to examine the impact of 
 
 \section{Conclusion}
 
+This report explores, analyzes, and evaluates several visual search algorithms. The models with higher search accuracy include the dense-feature-based BoVW and the color-and-texture-based Spatial Grid. Among models with the same level of accuracy, the fastest is BoVW. Across multiple experiments, different algorithms performed well in specific categories. The impact of distance measures on the final search results is relatively small. This project also examines how different levels of image feature extraction within the Semantic Gap affect feature matching between images and the final search outcomes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

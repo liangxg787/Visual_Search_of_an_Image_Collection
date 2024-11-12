@@ -56,37 +56,11 @@ lambda=1e-7;
 nbclass=20;
 
 %% 4) Train the SVM with training data
-% [xsup,w,b,nbsv,pos,alpha]=svmmulticlass(trainObs,trainClass,nbclass,C,lambda,kernel,kerneloption,verbose);
-% [ypred] = svmmultival(trainObs,xsup,w,b,nbsv,kernel,kerneloption);
-% fprintf( '\nClassification correct on training data : %2.2f \n',100*sum(ypred==trainClass)/length(trainClass)); 
-% 
-% %% 5) Test the classifier on test data
-% [ypred,maxi] = svmmultival(testObs,xsup,w,b,nbsv,kernel,kerneloption);
-% fprintf( '\nClassification correct on test data : %2.2f \n',100*sum(ypred==testClass)/length(testClass)); 
+fprintf("Start training ...\n");
+[xsup,w,b,nbsv,pos,alpha]=svmmulticlass(trainObs,trainClass,nbclass,C,lambda,kernel,kerneloption,verbose);
+[ypred] = svmmultival(trainObs,xsup,w,b,nbsv,kernel,kerneloption);
+fprintf( '\nClassification correct on training data : %2.2f \n',100*sum(ypred==trainClass)/length(trainClass)); 
 
-Kernel_Cell={'linear';'ploynomial';'RBF';'Sigmoid'};
-
-% Step 1: Load the data
-% X is the matrix of input data with dimension of N-by-p
-% where N is the number of instances and p is the number of features
-% For the convenience of visualization, we define p=2 here;
-data_fisheriris;
-X=trainObs;
-Y=trainClass;
-
-% Step 2: Define parameters
-% poly_con is the parameter for Polynomial Kernel 
-% gamma is the parameter for Gaussian Kernel 
-% kappa1 & kappa2 are the parameters for Sigmoid Kernel 
-% precision is the tolerance of precision
-% Cost is the hyperparameter for SVM
-define_parameters;
-
-% Step 3: Fit the model
-% Choose the kernel
-kernel=char(Kernel_Cell(1));
-%
-[alpha,Ker,beta0]=SVM(X,Y,kernel);
-
-% Step 4: Visualize the 2D plot
-SVM_plot(X,Y,alpha,beta0,kernel);
+%% 5) Test the classifier on test data
+[ypred,maxi] = svmmultival(testObs,xsup,w,b,nbsv,kernel,kerneloption);
+fprintf( '\nClassification correct on test data : %2.2f \n',100*sum(ypred==testClass)/length(testClass)); 
