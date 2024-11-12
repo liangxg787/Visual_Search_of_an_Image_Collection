@@ -171,3 +171,4 @@ document/*.png
 document/*.pdf
 pathdef.m
 *.mat
+document/graphics

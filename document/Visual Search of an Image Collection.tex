@@ -88,7 +88,7 @@ urlcolor=blue}
 \tableofcontents
 
 \begin{abstract}
-This project aims to explore different algorithms for visual searching of an image collection. For each algorithm, a feature database is constructed by computing descriptors, and a test image is used as a query to return a list of the top N images that best match the query by calculating similarity. The project tests and optimizes the performance of each algorithm by adjusting parameters and evaluates the search results using PR curves. Additionally, a comparative evaluation of the performance of different algorithms is conducted.
+This project aims to explore different algorithms for visual searching of an image collection. For each algorithm, a feature database is constructed by computing descriptors, and a test image is used as a query to return a list of the top N images that best match the query by calculating similarity. The project tests and optimizes the performance of each algorithm by adjusting parameters and evaluates the search results using PR curve. Additionally, a comparative evaluation of the performance of different algorithms is conducted. Finally, this project also attempts to use a Support Vector Machine (SVM) to classify all image categories based on the descriptors data.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,7 +96,7 @@ This project aims to explore different algorithms for visual searching of an ima
 \section{Introduction}
 \setParDis
 
-Compared to traditional text-based image search, visual appearance-based search is more effective at describing the visual characteristics of an image, while text is only suitable for describing the objects present in the image. This report explores various visual search algorithms using the MSRC-v2 image database, including Global Colour Histogram, Spatial Grid, Principal Component Analysis (PCA), and Scale-invariant feature transform (SIFT). Additionally, this project investigates the classification task on the current image dataset using (BoVW) Bag of Visual Words and Support Vector Machine (SVM) based on the computed descriptors.
+Compared to traditional text-based image search, visual appearance-based search is more effective at describing the visual characteristics of an image, while text is only suitable for describing the objects present in the image. This report explores various visual search algorithms using the MSRC-v2 image database, including Global Colour Histogram, Spatial Grid, Principal Component Analysis (PCA), and Scale-invariant feature transform (SIFT). Additionally, this project investigates the classification task on the current image dataset using (BoVW) Bag of Visual Words and SVM based on the computed descriptors.
 
 This report is structured as follows: \textit{Section 2} covers the implementation of visual search techniques. \textit{Section 3} delves into experiments using various descriptors and distance measures. \textit{Section 4} focuses on classifying the categories within the image collection. Finally, conclusions are drawn in \textit{Section 5}. The entire project was implemented using Matlab.
 
@@ -112,100 +112,397 @@ This report is structured as follows: \textit{Section 2} covers the implementati
   \caption{\label{fig:framework} The framework of implementation of Visual Search of an Image Collection.}
   \end{figure}
 
-Figure \ref{fig:framework} shows the project architecture.  First, the raw images in the MSRC-v2 image database are preprocessed, which includes splitting the test set and parsing the category labels. The test set is stored in the testFiles using a struct data structure, while the category labels are stored in classData using a map data structure. The mapping between category labels and the categories in the MSRC-v2 image database is shown in Table 1. Next, we explore using different models to build various descriptors, and all descriptor data is stored in a struct data structure, forming the All Features database. The methods for constructing descriptors using different models will be discussed in detail in \textit{Section 2.2}.
+Figure \ref{fig:framework} shows the project architecture.  First, the raw images in the MSRC-v2 image database are preprocessed, which includes splitting the test set and parsing the category labels. The test set is stored in the \verb+testData+ using a \verb+struct+ data structure, while the category labels are stored in \verb+classDict+ using a map data structure. The mapping between category labels and the categories in the MSRC-v2 image database is shown in Table \ref{table:Categories-encoding}. Next, we explore using different models to build various descriptors, and all descriptor data is stored in a struct data structure, forming the \verb+All Features database+. The methods for constructing descriptors using different models will be discussed in detail in \textit{Section 2.2}.
 
 
-In the Search Module, the query image is obtained from testFiles, and its corresponding feature descriptors are retrieved from the All Features database using the query image’s name. Then, the feature descriptors of this image are compared with those of all the images in the All Features database. Distance measures are used to calculate the distances, and the resulting data is sorted in ascending order to obtain the search results.
 
-Finally, the top 10 results are selected and the top 10 images most similar to the query image are output. Based on the search results, precision and recall are calculated, and Precision-Recall curves (PR curves) are plotted. The evaluation method for PR curves will be discussed in detail in \textit{Section 2.1}.
+\begin{table}[h]
+  \caption{Categories encoding of the dataset} % title of Table
+  \centering % used for centering table
+  \label{table:Categories-encoding}
+  \begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
+    \hline
+    \multicolumn{2}{|c|}{Categories Encoding List} \\
+    \hline
+    \textbf{Class No.}& \textbf{Class Name} \\
+    \hline
+    1 & grass-cow \\
+    2 & tree-grass-sky \\
+    3 & building-sky \\
+    4 & aeroplane-grass \\
+    5 & cow-grass-mount  \\
+    6 & face-body \\
+    7 & car-building \\
+    8 & bike-building \\
+    9 & sheep-grass \\
+    10 & flower \\
+    \hline
+    \end{tabular}
+  \begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
+    \hline
+    \multicolumn{2}{|c|}{Categories Encoding List} \\
+    \hline
+    \textbf{Class No.}& \textbf{Class Name} \\
+    \hline
+    11 & sign \\
+    12 & bird-sky-grass \\
+    13 & book \\
+    14 & chair \\
+    15 & cat \\
+    16 & dog \\
+    17 & road-building \\
+    18 & water-boat \\
+    19 & body-face \\
+    20 & water-boat-sky \\
+    \hline
+    \end{tabular}
+  
+\end{table}
+
+In the Search Module, the query image is obtained from testFiles, and its corresponding feature descriptors are retrieved from the \verb+All Features database+ using the query image’s name. Then, the feature descriptors of this image are compared with those of all the images in the \verb+All Features database+. Distance measures are used to calculate the distances, and the resulting data is sorted in ascending order to obtain the search results.
+
+Finally, the top 10 results are selected and the top 10 images most similar to the query image are output. Based on the search results, precision and recall are calculated, and Precision-Recall curve (PR curve) are plotted. The evaluation method for PR curve will be discussed in detail in \textit{Section 2.1}.
 
 From an engineering perspective, to facilitate model tuning and experimentation, this project improves code performance by optimizing the code structure and using multiprocessing. The code structure tree is shown in Figure 1, and the dependency structure is shown in Figure 2.
 
-Due to space limitations, this report only selects the experimental results of the following three query images for presentation and analysis. The categories represented by these three query images correspond to high, medium, and low performance in all the experiments, respectively.
+Due to space limitations, this report presents and analyzes the experimental results of only three selected query images. These images (Figure \ref{fig:images}) were chosen to represent categories with varying performance levels — high, medium, and low—across all experiments, allowing for a comprehensive evaluation of the system’s effectiveness. This Three Degrees Score method will be disscussed in detail in \textit{Section 2.1}.
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{1-2-s}\label{fig:1-2-s}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{10-17-s}\label{fig:10-17-s}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{17-10-s}\label{fig:17-10-s}}
+  \caption{\label{fig:images} Three images for experiments.}
+\end{figure}
+
 
 \subsection{Evaluation methodology}
 
 This project primarily uses precision and recall to evaluate the results of visual search. Precision indicates the proportion of true positive samples among those predicted as positive. Recall represents the proportion of true positive samples that were correctly predicted. Their calculation methods are as follows:
 
+\begin{equation}
+  \label{eqn:pr}
+  prcision = \frac{TP}{TP + FP}
+  \end{equation}
+\begin{equation}
+  \label{eqn:pr}
+  recall = \frac{TP}{TP + FN}
+  \end{equation}
+
+  here $TP$ represents the number of true positive samples, $FP$ represents the number of false positive samples, and $FN$ represents the number of false negative samples.
 
 
 The PR curve is a graph plotted based on precision and recall, and it is an important tool for evaluating the performance of a classification model. It helps us compare the model’s performance at different thresholds and select the optimal threshold for prediction.
+
+This project adopts a “Three Degrees Score" method to evaluate the PR curves of all model experimental results. This approach provides a rough assessment of model performance across all categories. The implementation involves scoring the PR curves based on their distribution: if the majority of samples for a category appear in the lower-left corner of the graph, a score of 0 is assigned; if they are concentrated in the middle section along the diagonal from the top left to the bottom right, a score of 1 is given; and if they cluster in the upper-right corner, a score of 2 is awarded. This results in a standardized Three Degrees Valuation Score table that can be applied consistently across all experiments.
 
 \subsection{Algorithms for computing descriptors}
 
 Due to time and hardware limitations, the parameter tuning for each model was restricted to a relatively small range during the exploration process.
 
+The Three Degrees Score table for all models' parameter tuning experiments is shown in Table 2.
+
+\begin{table}[h]
+  \caption{The Three Degrees Score for parameter tuning} % title of Table
+  \centering % used for centering table
+  \label{table:parameter-tuning}
+  \begin{tabular}{ |p{2cm}||p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}| }
+    \hline
+    % \multicolumn{1}{|c|}{Score List} \\
+    \hline
+    \textbf{Class Name} & \small{Color Hist} & \small{spacialGrid-colour} & \small{spacialGrid-texture} & \small{spacialGrid-both} & \small{PCA} & \small{SIFT} & \small{BoVW} \\
+    \hline
+    grass-cow & 0 & 0 & 1 & 1 & 0 & 0 & 0 \\
+    tree-grass-sky & 1 & 1 & 2 & 2 & 1 & 0 & 0 \\
+    building-sky & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    aeroplane-grass & 0 & 0 & 2 & 0 & 0 & 0 & 0 \\
+    cow-grass-mount & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    face-body & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    car-building & 2 & 1 & 2 & 2 & 1 & 0 & 0 \\
+    bike-building & 1 & 1 & 1 & 2 & 0 & 1 & 0 \\
+    sheep-grass & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    flower & 2 & 1 & 0 & 1 & 1 & 0 & 2 \\
+    \hline
+    \end{tabular}
+  \begin{tabular}{ |p{2cm}||p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}| }
+    \hline
+    % \multicolumn{1}{|c|}{Score List} \\
+    \hline
+    \textbf{Class Name} & \small{Color Hist} & \small{spacialGrid-colour} & \small{spacialGrid-texture} & \small{spacialGrid-both} & \small{PCA} & \small{SIFT} & \small{BoVW} \\
+    \hline
+    sign & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+    bird-sky-grass & 0 & 0 & 1 & 1 & 0 & 1 & 0 \\
+    book & 1 & 0 & 1 & 1 & 2 & 0 & 0 \\
+    chair & 0 & 0 & 1 & 1 & 0 & 0 & 0 \\
+    cat & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    dog & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    road-building & 2 & 2 & 1 & 2 & 0 & 0 & 0 \\
+    water-boat & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+    body-face & 1 & 1 & 0 & 1 & 1 & 0 & 1 \\
+    water-boat-sky & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    \hline
+    \end{tabular}
+  
+\end{table}
+
+
+
 \subsubsection{Global colour histogram}
 
 \paragraph{Model Principles.}
 
-The color histogram is relatively stable under translation and rotation around the viewing axis, and it only changes gradually with variations in the viewing angle\citep{ComputerVision}. To construct the histogram, the continuous color space is quantized into a finite set of discrete bins, determined by a parameter , which specifies the number of bins per color channel. In practice, each pixel’s RGB value can be encoded into a single integer, which serves as an index for its corresponding bin in the histogram. This encoding allows efficient mapping of pixel colors to their respective histogram bins based on this quantization equation: 
+The color histogram is relatively stable under translation and rotation around the viewing axis, and it only changes gradually with variations in the viewing angle\citep{ComputerVision}. To construct the histogram, the continuous color space is quantized into a finite set of discrete bins, determined by a parameter , which specifies the number of bins per color channel. In practice, each pixel’s RGB value can be encoded into a single integer, which serves as an index for its corresponding bin in the histogram. This encoding allows efficient mapping of pixel colors to their respective histogram bins based on this quantization equation \citep{EEE3032}: 
 
 \begin{equation}
-\label{eqn:LPC}
-H(z) = \frac{1}{(1 + \sum_{i=1}^p \alpha_i z^{-i})}
+\label{eqn:color-histogram}
+bin = rdash*(q^2) + gdash*(q) + bdash
 \end{equation}
 
 \paragraph{Parameter tuning.}
 
-Q represents the level of quantization of the RGB color space and is the most critical parameter for the global color histogram model. In this experiment,  Q is varied over a range from 1 to 50 to analyze its impact on performance.
+$Q$ represents the level of quantization of the RGB color space and is the most critical parameter for the global color histogram model. In this experiment, $Q$ is varied over a range from 1 to 50 to analyze its impact on performance.
 
 \paragraph{Results analysis.}
-best parameter
-best class   class 10, flower
+Through multiple rounds of parameter tuning experiments, we can conclude that:
+
+\noindent \textbf{The best parameter}: $Q = 16$. \\
+\textbf{The best classes}: \textit{7:car-building}, \textit{10:flower} and \textit{17:road-building}.
+
+In theory, a larger value of $Q$ should result in higher model accuracy. However, in actual experiments, this project found that an excessively large $Q$ value leads to worse performance and slower model execution. Additionally, when $Q = 1$, the accuracy for category \textit{10:flower} reaches 1.0. The project has not yet conducted a detailed investigation into the reasons behind this specific case.
+
+As shown in the Figure \ref{fig:colorHistPR}, these are PR curves of the experimental results and Figure \ref{fig:colorHistResult} shows the results for the query images.
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{RGBHist/1_2_s.bmp}\label{fig:1-2-s}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{RGBHist/10_17_s.bmp}\label{fig:10-17-s}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{RGBHist/17_10_s.bmp}\label{fig:17-10-s}}
+  \caption{\label{fig:colorHistPR} PR curves of experiments for the Global Color Histogram model.}
+\end{figure}
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{RGBHist/search_results/1_2_s}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{RGBHist/search_results/10_17_s}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{RGBHist/search_results/17_10_s}}
+  \caption{\label{fig:colorHistResult} Search results of experiments for the Global Color Histogram model.}
+\end{figure}
 
 \subsubsection{Spatial grid}
 
+\paragraph{Model Principles.}
 The Global Color Histogram focuses solely on the color distribution of the image but ignores the spatial information of the pixels. The spatial information of the image can be extracted by implementing a grid-based method, which helps to address the limitation of the Global Color Histogram. Specifically, we can divide the image into grids. Then, a color histogram is calculated within each grid. By merging the descriptors from all grids, we obtain the final descriptor. Furthermore, we can also compute the texture histogram within each grid to obtain the final descriptor.
 
-This project conducts experiments on three models: Spatial Grid with color feature, Spatial Grid with texture feature, and Spatial Grid with both color and texture teatures
+This project conducts experiments on three models: Spatial Grid with color feature, Spatial Grid with texture feature, and Spatial Grid with both color and texture teatures.
 
 
+\paragraph{Parameter tuning.}
+\textbf{Spatial grid with color feature}: The main parameters are $Q$ and $grids$. $Q$ represents the level of quantization of the RGB color space. In experiments, $Q$ is range from 8 to 24. $grids$ is the number of grids for row and column respectively. In experiments, $grids$ is range from 4 to 8.
+\textbf{Spatial grid with texture feature}: $angularQ$ is the number of levels of angular quantization for the histogram. In experiments, $angularQ$ is range from 8 to 16. Meanwhile, $grids$ is range from 4 to 8. 
+\textbf{Spatial grid with color feature and texture feature}: In experiments, $Q$ is range from 8 to 24.
+$angularQ$ is range from 8 to 16. $grids$ is range from 4 to 8. 
 
-Model Experiments
+\paragraph{Results analysis.}
+Through multiple rounds of parameter tuning experiments, we can conclude that:
 
-Parameter tuning
-Spatial grid with color feature,  Q, 8 - 24,  grids, 4-8
-Spatial grid with texture feature, angularQ, 8, 16, grids, 4-8     angularQ is  the number of levels of angular quantization for the histogram
-Spatial grid with color feature and texture feature,  Q, 8 - 24,  angularQ, 8, 16, grids, 4-8
+\noindent \textbf{The best parameter}: $Q = 24$, $angularQ = 16$ and $grids = 4$. \\
+\textbf{The best classes}: For Spatial grid with color feature: \textit{17:road-building}; For Spatial grid with texture feature: \textit{2:tree-grass-sky}, \textit{4:aeroplane-grass} and \textit{7:car-building}; For Spatial grid with both color and texture features: \textit{2:tree-grass-sky}, \textit{7:car-building}, \textit{8:bike-building} and \textit{17:road-building}.
 
-Results analysis
-best parameter
-best class
+As shown in the Figure \ref{fig:spacialGridcolourPR}, these are PR curves of the experimental results and Figure \ref{fig:spacialGridcolourResult} shows the results for the query images.
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_colour/1_2_s.bmp}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_colour/10_17_s.bmp}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_colour/17_10_s.bmp}}
+  \caption{\label{fig:spacialGridcolourPR} PR curves of experiments for Spacial Grid with colour.}
+\end{figure}
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_colour/search_results/1_2_s}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_colour/search_results/10_17_s}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_colour/search_results/17_10_s}}
+  \caption{\label{fig:spacialGridcolourResult} Search results of experiments for Spacial Grid with colour.}
+\end{figure}
+
+As shown in the Figure \ref{fig:spacialGridtexturePR}, these are PR curves of the experimental results and Figure \ref{fig:spacialGridtextureResult} shows the results for the query images.
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_texture/1_2_s.bmp}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_texture/10_17_s.bmp}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_texture/17_10_s.bmp}}
+  \caption{\label{fig:spacialGridtexturePR} PR curves of experiments for Spacial Grid with texture.}
+\end{figure}
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_texture/search_results/1_2_s}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_texture/search_results/10_17_s}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_texture/search_results/17_10_s}}
+  \caption{\label{fig:spacialGridtextureResult} Search results of experiments for Spacial Grid with texture.}
+\end{figure}
+
+
+As shown in the Figure \ref{fig:spacialGridbothPR}, these are PR curves of the experimental results and Figure \ref{fig:spacialGridbothResult} shows the results for the query images.
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_both/1_2_s.bmp}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_both/10_17_s.bmp}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_both/17_10_s.bmp}}
+  \caption{\label{fig:spacialGridbothPR} PR curves of experiments for Spacial Grid with colour and texture.}
+\end{figure}
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_both/search_results/1_2_s}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_both/search_results/10_17_s}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_both/search_results/17_10_s}}
+  \caption{\label{fig:spacialGridbothResult} Search results of experiments for Spacial Grid with colour and texture.}
+\end{figure}
 
 \subsubsection{PCA}
 
+\paragraph{Model Principles.}
 Principal Component Analysis (PCA) is a widely used technique for dimensionality reduction, lossy data compression, feature extraction, and data visualization (Jolliffe, 2002).  PCA can be defined in two ways: firstly, it is an orthogonal projection of data onto a lower-dimensional linear space, known as the principal subspace, such that the variance of the projected data 3  is maximized (Hotelling, 1933); secondly, it is a linear projection method that aims to minimize the average projection cost, i.e., the mean squared distance between data points and their projections (Pearson, 1901). In this project, we directly use the PCA model provided in the cvprlab model library of the EEE3032 module. The core method is to use the eig function to solve the Eigen decomposition of the covariance matrix.
 
 
-Model Experiments
-
-Parameter tuning
+\paragraph{Parameter tuning.}
 In this project, no parameter tuning has been performed for the PCA model.
 
-Results analysis
-best parameter
-best class
+\paragraph{Results analysis.}
+Through multiple rounds of parameter tuning experiments, we can conclude that:
 
+\noindent \textbf{The best classes}: \textit{13:book}
+
+As shown in the Figure \ref{fig:PCAPR}, these are PR curves of the experimental results and Figure \ref{fig:PCAResult} shows the results for the query images.
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{PCA/1_2_s.bmp}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{PCA/10_17_s.bmp}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{PCA/17_10_s.bmp}}
+  \caption{\label{fig:PCAPR} PR curves of experiments for PCA.}
+\end{figure}
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{PCA/search_results/1_2_s}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{PCA/search_results/10_17_s}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{PCA/search_results/17_10_s}}
+  \caption{\label{fig:PCAResult} Search results of experiments for PCA.}
+\end{figure}
 
 
 \subsubsection{SIFT}
 
+\paragraph{Model Principles.}
 Scale-invariant feature transform (SIFT) is a computer vision algorithm designed to detect and describe local features in images. It operates by identifying keypoints at various scales and computing their scale, rotation, and location information, providing a rich representation of the image. SIFT features are constructed by computing the gradient of each pixel within a 16x16 window around the detected keypoint and using the corresponding level of the Gaussian pyramid at which the keypoint was detected. The gradient magnitudes are weighted by a Gaussian function to reduce the influence of gradients far from the center, as these gradients are more susceptible to small misalignments.
 
-Model Experiments
+\paragraph{Parameter tuning.}
+$NumOctaves$ is the number of octaves of the Gaussian scale space. In experiments, $NumOctaves = 3$.
+$NumLevels$ is the number of scale levels within each octave. In experiments, $NumLevels$ is range from 5 to 25.
 
-Parameter adjustment
-NumOctaves, fixed 3 
-NumLevels, range from 5 to 25
+\paragraph{Results analysis.}
+Through multiple rounds of parameter tuning experiments, we can conclude that:
 
-Results analysis
-best parameter
-best class
+\noindent \textbf{The best parameter}: $NumLevels = 25$. \\
+\textbf{The best classes}: \textit{8:bike-building} and \textit{12:bike-sky-grass}.
+
+As shown in the Figure \ref{fig:SIFTPR}, these are PR curves of the experimental results and Figure \ref{fig:SIFTResult} shows the results for the query images.
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{SIFT/1_2_s.bmp}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{SIFT/10_17_s.bmp}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{SIFT/17_10_s.bmp}}
+  \caption{\label{fig:SIFTPR} PR curves of experiments for SIFT.}
+\end{figure}
+
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{SIFT/search_results/1_2_s}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{SIFT/search_results/10_17_s}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{SIFT/search_results/17_10_s}}
+  \caption{\label{fig:SIFTResult} Search results of experiments for SIFT.}
+\end{figure}
+
+\subsubsection{BoVW}
+
+\paragraph{Model Principles.}
+BoVW model is a method used for image retrieval, inspired by the “bag of words” concept originally used in text retrieval. The “bag of words” approach treats a text document as a collection of individual words, disregarding grammar, syntax, and context. By building a dictionary and counting the frequency of each word, it allows for the classification of text content. Similarly, BoVW applies this idea to image retrieval.
+
+Implementation of BoVW in This Project:
+
+\begin{enumerate}
+
+\item Feature Extraction: Using the SIFT algorithm mentioned earlier, feature vectors are extracted from images across different categories. The descriptors for each image form a matrix.
+
+\item ​Building the Codebook: All feature vectors are combined into a single matrix. The K-Means algorithm is then used to cluster the feature vectors, grouping similar visual words together to construct a codebook with visual words. In this project, the K-Means algorithm provided by the cvprlab model library in the EEE3032 module is used.
+
+​\item Histogram Construction: For each image, the frequency of each visual word from the codebook is counted using the histc function, creating a histogram representing the occurrence of each visual word. The image is then represented as a -dimensional numerical vector, which is stored in a descriptors feature database for later retrieval.
+
+\item Image Search: During the search process, distance measures are used to find the top results with the smallest distances to the query image.
+\end{enumerate}
+
+\paragraph{Parameter tuning.}
+BoVW is implemented based on SIFT, with its main parameters following the parameter adjustments of SIFT.
+
+\paragraph{Results analysis.}
+Through multiple rounds of parameter tuning experiments, we can conclude that:
+
+\noindent \textbf{The best classes}: \textit{10:flower}.
 
 
+As shown in the Figure \ref{fig:BoVWPR}, these are PR curves of the experimental results and Figure \ref{fig:BoVWResult} shows the results for the query images.
 
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{BoVW/1_2_s.bmp}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{BoVW/10_17_s.bmp}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{BoVW/17_10_s.bmp}}
+  \caption{\label{fig:BoVWPR} PR curves of experiments for BoVW.}
+\end{figure}
 
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{BoVW/search_results/1_2_s}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{BoVW/search_results/10_17_s}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{BoVW/search_results/17_10_s}}
+  \caption{\label{fig:BoVWResult} Search results of experiments for BoVW.}
+\end{figure}
 
 
 \section{Experiments for different descriptors and distance measures}
@@ -219,44 +516,92 @@ This experiment uses the variable-controlling approach to examine the impact of 
 
 \subsection{Different descriptors}
 
-Experimental Conditions
-
+\paragraph{Experimental conditions.}
 The same distance calculation method, Euclidean Distance, was used; different descriptor models were employed: Global Color Histogram and Spatial Grid with both color and texture features.
 
-Analysis of Experimental Results
+\paragraph{Analysis of experimental results.}
 
+These experimental results can be compared with the results from textit{Section 2.2.1} and textit{Section 2.2.2} for reference.
 
 \subsection{Different distance measures}
 
-Experimental Conditions
-
+\paragraph{Experimental conditions.}
 The same descriptor model, Spatial Grid with both color and texture features, was used; different distance calculation methods were employed: Euclidean Distance, Manhattan Distance, Cosine Similarity, and Pearson Distance.
 
-Analysis of Experimental Results
-
-\section{BoVW}
-
-BoVW model is a method used for image retrieval, inspired by the “bag of words” concept originally used in text retrieval. The “bag of words” approach treats a text document as a collection of individual words, disregarding grammar, syntax, and context. By building a dictionary and counting the frequency of each word, it allows for the classification of text content. Similarly, BoVW applies this idea to image retrieval.
+\paragraph{Analysis of experimental results.}
 
 
+As shown in the Figure \ref{fig:cosine}, Figure \ref{fig:euclidean},  Figure \ref{fig:manhattan}, and Figure \ref{fig:pearson},these are PR curves of the experimental.
 
-Implementation of BoVW in This Project:
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_cosine/1_2_s.bmp}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_cosine/10_17_s.bmp}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_cosine/17_10_s.bmp}}
+  \caption{\label{fig:cosine} PR curves of experiments for spacialGrid with cosine distance.}
+\end{figure}
 
-Feature Extraction: Using the SIFT algorithm mentioned earlier, feature vectors are extracted from images across different categories. The descriptors for each image form a matrix.
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_euclidean/1_2_s.bmp}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_euclidean/10_17_s.bmp}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_euclidean/17_10_s.bmp}}
+  \caption{\label{fig:euclidean} PR curves of experiments for spacialGrid with Euclidean distance.}
+\end{figure}
 
-​Building the Codebook: All feature vectors are combined into a single matrix. The K-Means algorithm is then used to cluster the feature vectors, grouping similar visual words together to construct a codebook with visual words. In this project, the K-Means algorithm provided by the cvprlab model library in the EEE3032 module is used.
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_manhattan/1_2_s.bmp}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_manhattan/10_17_s.bmp}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_manhattan/17_10_s.bmp}}
+  \caption{\label{fig:manhattan} PR curves of experiments for spacialGrid with Manhattan distance.}
+\end{figure}
 
-​Histogram Construction: For each image, the frequency of each visual word from the codebook is counted using the histc function, creating a histogram representing the occurrence of each visual word. The image is then represented as a -dimensional numerical vector, which is stored in a descriptors feature database for later retrieval.
+\begin{figure}[!tbp]
+  \centering
+  \subfloat[1-2-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_pearson/1_2_s.bmp}}
+  \hfill
+  \subfloat[10-17-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_pearson/10_17_s.bmp}}
+  \hfill
+  \subfloat[17-10-s]{\includegraphics[width=0.3\textwidth]{spacialGrid_pearson/17_10_s.bmp}}
+  \caption{\label{fig:pearson} PR curves of experiments for spacialGrid with Pearson distance.}
+\end{figure}
 
-Image Search: During the search process, distance measures are used to find the top results with the smallest distances to the query image.
 
 
 \section{Classify with SVM}
 
+SVM is a popular supervised machine learning algorithm primarily used for classification and regression tasks. It is known for its efficiency in high-dimensional spaces and is widely applied to binary classification problems. The core principle of SVM is to find an optimal decision boundary (hyperplane) that separates samples from different classes, maximizing classification accuracy.
+
+In this project, we initially attempted to implement SVM using the SVM model provided in the cvprlab model library of the EEE3032 module, but it failed to run successfully. Subsequently, we utilized the Classification Learner Toolbox in Matlab to classify all image data based on the previously obtained descriptors. Based on conclusions from earlier experiments, we used descriptors calculated from the Spatial Grid with color and texture features, which demonstrated relatively better performance and effectiveness, as training data. The SVM model used was the **Fine Gaussian SVM**. Due to hardware limitations, PCA was applied to reduce the dimensionality of the descriptors, ensuring the training process could proceed smoothly.
+
+The distribution of dataset is shown in Figure \ref{fig:distribution}.The results of the classification experiment using Fine Gaussian SVM are shown in the Figure \ref{fig:confusion}:
+
+
+\begin{figure}[h]
+  \begin{center}
+  \includegraphics[width=12cm]{datasetDistribution}
+  \end{center}
+  \caption{\label{fig:distribution} The distribution of dataset.}
+  \end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+  \includegraphics[width=12cm]{confusionMatrixForSVM}
+  \end{center}
+  \caption{\label{fig:confusion} The confusion matrix for the training result.}
+  \end{figure}
+
 
 \section{Conclusion}
 
-This report explores, analyzes, and evaluates several visual search algorithms. The models with higher search accuracy include the dense-feature-based BoVW and the color-and-texture-based Spatial Grid. Among models with the same level of accuracy, the fastest is BoVW. Across multiple experiments, different algorithms performed well in specific categories. The impact of distance measures on the final search results is relatively small. This project also examines how different levels of image feature extraction within the Semantic Gap affect feature matching between images and the final search outcomes.
+This report explores, analyzes, and evaluates several visual search algorithms. The model with higher search accuracy is the color-and-texture-based Spatial Grid. Among models with the same level of accuracy, the fastest is the global colour histogram model. Across multiple experiments, different algorithms performed well in specific categories. The impact of distance measures on the final search results is relatively small. This project also examines how different levels of image feature extraction within the Semantic Gap affect feature matching between images and the final search outcomes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

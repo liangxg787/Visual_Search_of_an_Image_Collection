@@ -1,20 +1,11 @@
 %% Author: Xiaoguang Liang (PG/T - Comp Sci & Elec Eng)
 %% University of Surrey, United Kingdom
 %% Email address: xl01339@surrey.ac.uk
-%% Time: 21/10/2024 00:04
+%% Time: 12/11/2024 15:32
 
 clc;
 close all;
 clear;
-
-% file='cwsolution/descriptors/globalRGBhisto';
-% file='data';
-% % file_name='/20_1_s.mat';
-% file_name='/test_data.mat';
-% file_path=([file, file_name]);
-% disp(file_path);
-% data=load(file_path);
-
 
 % DESCRIPTOR_SUBFOLDER=GlobalSetting.filePathInfo.DESCRIPTOR_SUBFOLDER;
 % Define the output file path for feature data

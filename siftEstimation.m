@@ -20,7 +20,6 @@ distanceType = 'euclideanMatrix';
 % Set the graphs saving path
 subSavingPath=ModelType;
 
-% Experiment with different levels of RGB quantization
 % Make a list of NumOctaves values the range from 3 to 10, strading by 2
 NumOctavesList = 3:1:3;
 NumOctavesLen=length(NumOctavesList);
