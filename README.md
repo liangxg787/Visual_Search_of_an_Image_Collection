@@ -5,6 +5,10 @@ The first course work for CVPR
 This project aims to explore different algorithms for visual searching of an image collection. For each algorithm, a feature database is constructed by computing descriptors, and a test image is used as a query to return a list of the top N images that best match the query by calculating similarity. The project tests and optimizes the performance of each algorithm by adjusting parameters and evaluates the search results using PR curve. Additionally, a comparative evaluation of the performance of different algorithms is conducted. Finally, this project also attempts to use a Support Vector Machine (SVM) to classify all image categories based on the descriptors data.
 
 
+## Architecture of the project
+![architecture](<document/graphics/The framework of implementation of Visual Search of an Image Collection.png>)
+
+
 ### Structure of the code
 ```
 .
